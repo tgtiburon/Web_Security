@@ -11,6 +11,7 @@ savedVTResults = []; //Holds the results from the URL scan
 
 
 
+
 // Functions
 
 /*  Function: initialLoad() 
@@ -22,6 +23,7 @@ savedVTResults = []; //Holds the results from the URL scan
 const initialLoad = () => {
     // load saved data so we don't use up api calls
     loadSavedData();
+   // processVTData();
 
 
 }//end initialLoad()
@@ -46,16 +48,31 @@ let loadSavedData = function() {
        console.log("savedVTID = " + savedVTID)
     }
 
-    let savedVTResults = localStorage.getItem("savedVTResults");
+    savedVTResults = localStorage.getItem("savedVTResults");
     //no savedVTResults
     if (!savedVTResults) {
         savedVTResults = [];
     }else {
         // load and parse savedVTResults
-        savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
+       let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
         console.log("savedVTResults = "  );
         console.log(savedVTResults);
+        processVTData(savedVTResults);
     }
+   // finalResultsObjArr
+    finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
+    //no savedVTResults
+    if (!finalResultsObjArr) {
+        finalResultsObjArr = [];
+    }else {
+        // load and parse savedVTResults
+       let finalResultsObjArr = JSON.parse(localStorage.getItem("savedVTResults"));
+        console.log("finalResultsObjArr = "  );
+        console.log(finalResultsObjArr);
+        
+    }
+
+   
      
 };
 
@@ -141,6 +158,9 @@ const webSiteScan = (savedVTID) => {
                 savedVTResults = data;
                
                 localStorage.setItem("savedVTResults", JSON.stringify(savedVTResults));
+
+                // Time to process all that data
+                processVTData(savedVTResults);
             
             });
 
@@ -154,6 +174,47 @@ const webSiteScan = (savedVTID) => {
    
 }// end webSiteScan
 
+
+/*  Function: processVTData
+    => Takes the data from the analyze call at VT
+    and puts it into easy to use objects or array??
+    args: savedVTResults
+    return: none
+*/
+
+processVTData = (savedVTResults) => {
+
+  // debugger;
+  savedVTResults = savedVTResults;
+
+   // let tmpStr = savedVTResults.meta;
+    console.log(savedVTResults.data.attributes.results);
+    let tmpObj = savedVTResults.data.attributes.results
+  
+
+   let i = 0;
+   let finalResultsObjArr = [];
+
+   
+
+    Object.values(tmpObj).forEach(val=> {
+
+
+    
+ // push the data into finalResultsObjArr for displaying results.
+        finalResultsObjArr.push({engine:val.engine_name, verdict:val.category});
+   
+
+    
+        i++;
+    });
+    console.log(finalResultsObjArr);
+    // lets save it
+    localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
+
+   
+
+}
 
 $("body").on("click", "#testButton", function() {
     console.log(this);
