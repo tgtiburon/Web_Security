@@ -3,105 +3,88 @@ console.log("script.js loaded!");
 
 
 // Variables
-
 const vTotalInfo = '8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a';
 
 
 
 
 // Functions
-const webSiteScan  = () => {
+
+
+const initialLoad = () => {
+
+
+}//end initialLoad()
+const webSiteGetID  = () => {
 
   
- 
-
-// winner winner chicken dinner
-//curl --request POST --url https://www.virustotal.com/api/v3/urls --header "x-apikey: 8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a" --form url="www.google.com"
-
-//https://www.virustotal.com/vtapi/v2/url/report?apikey=8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a&resource='www.google.com'
-
-
+   
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    
-    console.log(vTotalInfo);
-  
+    let formData = new FormData();
+    formData.append('url', 'www.google.com');
 
- //debugger;
- //tmpStr = JSON.stringify("www.google.com");
- let formData = new FormData()
- formData.append('url', 'www.google.com');
- myRequestObject = {
-     method: 'POST',
-    // headers: {'x-apikey' : vTotalInfo},
-    headers: {'x-apikey' :'8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a' },
-     body: formData,
-     mode: 'no-cors',
-     Credentials : 'same-origin'
-     
-    
- }
+    let myHeaders = new Headers();
+    myHeaders = {"X-Apikey" : vTotalInfo };
+    console.log(formData);
+    console.log(myHeaders);
+ 
+    myRequestObject = {
+        method: 'POST',
+        headers: myHeaders,
+       
+        body: formData,
+        mode: 'cors'
+           
+    }
 
- //origin = "www.mozilla.org";
- console.log(myRequestObject);
+    console.log("myRequestObject below:")
+    console.log(myRequestObject);
 
    fetch(myRequestURL, myRequestObject).then(function(response){ 
-   // fetch(myRequestURL, {method:'POST', headers:{'x-apikey' : vTotalInfo  }, body:{'url':'www.google.com'}, mode:'no-cors', credentials: 'same-origin'}).then(function(response) {
-
+ 
+    console.log(response);
         if(response.ok) {
+          
             response.json().then(function(data) {
                 console.log(data); 
                 console.log(response.status);
+                let analysisID = data.id;
+                console.log("analysisID = " + analysisID)
             
-        });
+            });
 
    
         } else {
-            alert("Error:  Web Security failed to retrieve");
+            console.log("It worked!");
             console.log(response.status);
+            // localStorage.setItem("webSiteID", JSON.stringify(webSiteID));
 
 
         }
     });
 
 
-//version 2.0
+};//End websiteGetID()
 
-// let formData2 = new FormData()
-//  formData2.append('url', 'www.google.com');
-//  myRequestObject2 = {
-//      method: 'POST',
-//     // headers: {'x-apikey' : vTotalInfo},
-//     headers: {'apikey' :'8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a'},
-//      body: formData2,
-//      mode: 'no-cors'
-//  }
-//  console.log(myRequestObject2);
+const webSiteScan = () => {
 
-//  let myRequestURL2 = "https://www.virustotal.com/vtapi/v2/url/scan";
-
-//    fetch(myRequestURL2, myRequestObject2).then(function(response){ 
-//    // fetch(myRequestURL, {method:'POST', headers:{'x-apikey' : vTotalInfo  }, body:{'url':'www.google.com'}, mode:'no-cors', credentials: 'same-origin'}).then(function(response) {
-
-//         if(response.ok) {
-//             response.json().then(function(data) {
-//                 console.log(data); 
-//                 console.log(response.status);
-            
-//         });
-
-   
-//         } else {
-//             alert("Error:  Web Security failed to retrieve");
-//             console.log(response.status);
+    
+}// end webSiteScan
 
 
-//         }
-//     });
+$("body").on("click", "#testButton", function() {
+    console.log(this);
+});
+
+
+
+// Might use JQUERY instead
+const buttonHandler = (event) => {
+    console.log(event);
+  
+         
 };
-
-
-
-
 
 
 
@@ -109,12 +92,12 @@ const webSiteScan  = () => {
 // Function calls
 
 
-webSiteScan();
-
+initialLoad();
 
 
 
 
 // Listeners
+document.addEventListener("click", buttonHandler);
 
 
