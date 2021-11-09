@@ -33,6 +33,7 @@ const initialLoad = () => {
 */
 
 let loadSavedData = function() {
+    
 
     let savedVTID = localStorage.getItem("savedVTID");
     //no savedVTID make one
@@ -42,44 +43,54 @@ let loadSavedData = function() {
         // load and parse savedVTID
        savedVTID = JSON.parse(localStorage.getItem("savedVTID"));
     
-       console.log("analysisID = " + savedVTID)
+       console.log("savedVTID = " + savedVTID)
     }
-    
-    //return savedVTID;
+
+    let savedVTResults = localStorage.getItem("savedVTResults");
+    //no savedVTResults
+    if (!savedVTResults) {
+        savedVTResults = [];
+    }else {
+        // load and parse savedVTResults
+        savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
+        console.log("savedVTResults = "  );
+        console.log(savedVTResults);
+    }
+     
 };
 
 /*  Function: webSiteGetID 
     => fetches the special VirusTotal ID needed to run analyse
-    args: none
+    args: URL that needs it's unique ID
     return: none
 */
 
-const webSiteGetID  = () => {
+const webSiteGetID  = (/*url*/) => {
 
+    // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
-   
+   // need to submit as a FormData object
     let formData = new FormData();
     formData.append('url', 'www.google.com');
-
+    // set up the headers
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
+    // debug info
     console.log(formData);
     console.log(myHeaders);
- 
+    //Create the myRequestObject
     myRequestObject = {
         method: 'POST',
         headers: myHeaders,
-       
         body: formData,
-        mode: 'cors'
-           
+        mode: 'cors'    
     }
-
+   // Try and fetch the id of the website
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
     console.log(response);
         if(response.ok) {
-          
+          // it worked so save the id
             response.json().then(function(data) {
              
                 savedVTID = data.data.id;
@@ -89,6 +100,7 @@ const webSiteGetID  = () => {
             
             });
         } else {
+            //it failed
             console.log("WebsiteGetID failed to get an ID!");
         }
     });
@@ -104,24 +116,25 @@ const webSiteGetID  = () => {
     return: none
 */
 const webSiteScan = (savedVTID) => {
-
+    // URL for requesting a scan of the URL with the special ID
     let myRequestURL = "https://www.virustotal.com/api/v3/analyses/" + savedVTID;
-
+    // set up the header
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
-  
+    // create myRequestObject
     myRequestObject = {
         method: 'GET',
         headers: myHeaders,
-        mode: 'cors'
-        
+        mode: 'cors'    
     }
+    // for debugging
     console.log(myRequestURL);
-
+    // try and fetch the analysis of the url
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
     console.log(response);
         if(response.ok) {
+            // it worked parse and store the data
         
             response.json().then(function(data) {
            
@@ -132,6 +145,7 @@ const webSiteScan = (savedVTID) => {
             });
 
         } else {
+            // it failed.
             console.log("It failed!");
            
         }
@@ -158,9 +172,7 @@ const buttonHandler = (event) => {
 
 
 // Function calls
-
-
-initialLoad();
+initialLoad();// Call this to start the website.
 
 
 
