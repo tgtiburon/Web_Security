@@ -42,7 +42,9 @@ let loadSavedData = function() {
     if (!savedVTID) {
         savedVTID = [];
     } else {
-        // load and parse savedVTID
+        // load and parse savedVTID  This is the ID returned
+        // by virustotal when we send the url to it.
+        // We use the ID by sending it to virustotal, which it uses to analyze the url.
        savedVTID = JSON.parse(localStorage.getItem("savedVTID"));
     
        console.log("savedVTID = " + savedVTID)
@@ -53,7 +55,8 @@ let loadSavedData = function() {
     if (!savedVTResults) {
         savedVTResults = [];
     }else {
-        // load and parse savedVTResults
+        // load and parse savedVTResults -- This is the saved results from virus
+        // total after we sent it for analysis.
        let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
         console.log("savedVTResults = "  );
         console.log(savedVTResults);
@@ -66,7 +69,7 @@ let loadSavedData = function() {
         finalResultsObjArr = [];
     }else {
         // load and parse savedVTResults
-       let finalResultsObjArr = JSON.parse(localStorage.getItem("savedVTResults"));
+       let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
         console.log("finalResultsObjArr = "  );
         console.log(finalResultsObjArr);
         
@@ -93,8 +96,8 @@ const webSiteGetID  = (/*url*/) => {
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
     // debug info
-    console.log(formData);
-    console.log(myHeaders);
+    //console.log(formData);
+    //console.log(myHeaders);
     //Create the myRequestObject
     myRequestObject = {
         method: 'POST',
@@ -109,10 +112,14 @@ const webSiteGetID  = (/*url*/) => {
         if(response.ok) {
           // it worked so save the id
             response.json().then(function(data) {
+
+                // Virus total sends us the ID of the URL 
              
                 savedVTID = data.data.id;
                   
                 localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
+                // Now we send the special ID virus total sent us, back to them to analyze
+                // I am not sure why they don't do it all in one step.  
                 webSiteScan(savedVTID);
             
             });
@@ -145,7 +152,7 @@ const webSiteScan = (savedVTID) => {
         mode: 'cors'    
     }
     // for debugging
-    console.log(myRequestURL);
+   // console.log(myRequestURL);
     // try and fetch the analysis of the url
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
@@ -169,7 +176,7 @@ const webSiteScan = (savedVTID) => {
             console.log("It failed!");
            
         }
-        console.log(response);
+        //console.log(response);
     });
    
 }// end webSiteScan
@@ -184,52 +191,40 @@ const webSiteScan = (savedVTID) => {
 
 processVTData = (savedVTResults) => {
 
-  // debugger;
-  savedVTResults = savedVTResults;
+    // storing the savedVTResults sent to the function into a variable with 
+    // the same name
+    savedVTResults = savedVTResults;
 
-   // let tmpStr = savedVTResults.meta;
-    console.log(savedVTResults.data.attributes.results);
+    //console.log(savedVTResults.data.attributes.results);
+    // We are turning the results into a temporary object so we can 
+    // use forEach to loop through it later.
     let tmpObj = savedVTResults.data.attributes.results
   
-
+    // iterator for the Object loop
    let i = 0;
    let finalResultsObjArr = [];
 
-   
-
+    // Using forEach to go through the object array so we can store the results in an easier format
     Object.values(tmpObj).forEach(val=> {
 
-
-    
- // push the data into finalResultsObjArr for displaying results.
-        finalResultsObjArr.push({engine:val.engine_name, verdict:val.category});
-   
-
-    
+        // push the data into finalResultsObjArr for displaying results.
+        finalResultsObjArr.push({engine:val.engine_name, verdict:val.result});
         i++;
     });
+
     console.log(finalResultsObjArr);
-    // lets save it
+    // lets save the new object array.
+    // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
 
    
 
 }
-
-$("body").on("click", "#testButton", function() {
+// Label the input button with id="inputButton" so
+// it can be tied to this.
+$("body").on("click", "#inputButton", function() {
     console.log(this);
 });
-
-
-
-// Might use JQUERY instead
-const buttonHandler = (event) => {
-    console.log(event);
-  
-         
-};
-
-
 
 
 // Function calls
@@ -238,7 +233,7 @@ initialLoad();// Call this to start the website.
 
 
 
-// Listeners
-document.addEventListener("click", buttonHandler);
+// Listeners --We will probably use jquery so won't need them.
+
 
 
