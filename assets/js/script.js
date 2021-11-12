@@ -41,7 +41,9 @@ let loadSavedData = function() {
     if (!savedVTID) {
         savedVTID = [];
     } else {
-        // load and parse savedVTID
+        // load and parse savedVTID  This is the ID returned
+        // by virustotal when we send the url to it.
+        // We use the ID by sending it to virustotal, which it uses to analyze the url.
        savedVTID = JSON.parse(localStorage.getItem("savedVTID"));
     
        console.log("savedVTID = " + savedVTID)
@@ -52,7 +54,8 @@ let loadSavedData = function() {
     if (!savedVTResults) {
         savedVTResults = [];
     }else {
-        // load and parse savedVTResults
+        // load and parse savedVTResults -- This is the saved results from virus
+        // total after we sent it for analysis.
        let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
         console.log("savedVTResults = "  );
         console.log(savedVTResults);
@@ -65,7 +68,7 @@ let loadSavedData = function() {
         finalResultsObjArr = [];
     }else {
         // load and parse savedVTResults
-       let finalResultsObjArr = JSON.parse(localStorage.getItem("savedVTResults"));
+       let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
         console.log("finalResultsObjArr = "  );
         console.log(finalResultsObjArr);
         
@@ -92,8 +95,8 @@ const webSiteGetID  = (/*url*/) => {
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
     // debug info
-    console.log(formData);
-    console.log(myHeaders);
+    //console.log(formData);
+    //console.log(myHeaders);
     //Create the myRequestObject
     myRequestObject = {
         method: 'POST',
@@ -108,65 +111,20 @@ const webSiteGetID  = (/*url*/) => {
         if(response.ok) {
           // it worked so save the id
             response.json().then(function(data) {
+
+                // Virus total sends us the ID of the URL 
              
                 savedVTID = data.data.id;
                   
                 localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
+                // Now we send the special ID virus total sent us, back to them to analyze
+                // I am not sure why they don't do it all in one step.  
                 webSiteScan(savedVTID);
             
             });
         } else {
             //it failed
             console.log("WebsiteGetID failed to get an ID!");
-        }
-    });
-
-
-};//End websiteGetID()
-
-
-/*  Function: webSiteScan
-    => Takes the VT url ID and sends it to get analyzed
-    and saves the result to localStorage to cut down on API calls.
-    args: savedVTID
-    return: none
-*/
-const webSiteScan = (savedVTID) => {
-    // URL for requesting a scan of the URL with the special ID
-    let myRequestURL = "https://www.virustotal.com/api/v3/analyses/" + savedVTID;
-    // set up the header
-    let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo };
-    // create myRequestObject
-    myRequestObject = {
-        method: 'GET',
-        headers: myHeaders,
-        mode: 'cors'    
-    }
-    // for debugging
-    console.log(myRequestURL);
-    // try and fetch the analysis of the url
-   fetch(myRequestURL, myRequestObject).then(function(response){ 
- 
-    console.log(response);
-        if(response.ok) {
-            // it worked parse and store the data
-        
-            response.json().then(function(data) {
-           
-                savedVTResults = data;
-               
-                localStorage.setItem("savedVTResults", JSON.stringify(savedVTResults));
-
-                // Time to process all that data
-                processVTData(savedVTResults);
-            
-            });
-
-        } else {
-            // it failed.
-            console.log("It failed!");
-           
         }
         console.log(response);
     });
@@ -199,10 +157,53 @@ processVTData = (savedVTResults) => {
     Object.values(tmpObj).forEach(val=> {
 
 
-    
- // push the data into finalResultsObjArr for displaying results.
-        finalResultsObjArr.push({engine:val.engine_name, verdict:val.category});
+/*  Function: webSiteScan
+    => Takes the VT url ID and sends it to get analyzed
+    and saves the result to localStorage to cut down on API calls.
+    args: savedVTID
+    return: none
+*/
+const webSiteScan = (savedVTID) => {
+    // URL for requesting a scan of the URL with the special ID
+    let myRequestURL = "https://www.virustotal.com/api/v3/analyses/" + savedVTID;
+    // set up the header
+    let myHeaders = new Headers();
+    myHeaders = {"X-Apikey" : vTotalInfo };
+    // create myRequestObject
+    myRequestObject = {
+        method: 'GET',
+        headers: myHeaders,
+        mode: 'cors'    
+    }
+    // for debugging
+   // console.log(myRequestURL);
+    // try and fetch the analysis of the url
+   fetch(myRequestURL, myRequestObject).then(function(response){ 
+ 
+    console.log(response);
+        if(response.ok) {
+            // it worked parse and store the data
+        
+            response.json().then(function(data) {
+           
+                savedVTResults = data;
+               
+                localStorage.setItem("savedVTResults", JSON.stringify(savedVTResults));
+
+                // Time to process all that data
+                processVTData(savedVTResults);
+            
+            });
+
+        } else {
+            // it failed.
+            console.log("It failed!");
+           
+        }
+        //console.log(response);
+    });
    
+}// end webSiteScan
 
     
         i++;
@@ -215,23 +216,58 @@ processVTData = (savedVTResults) => {
 
 }
 
-$("body").on("click", "#testButton", function() {
+/*  Function: processVTData
+    => Takes the data from the analyze call at VT
+    and puts it into easy to use objects or array??
+    args: savedVTResults
+    return: none
+*/
+
+processVTData = (savedVTResults) => {
+
+    // storing the savedVTResults sent to the function into a variable with 
+    // the same name
+    savedVTResults = savedVTResults;
+
+    //console.log(savedVTResults.data.attributes.results);
+    // We are turning the results into a temporary object so we can 
+    // use forEach to loop through it later.
+    let tmpObj = savedVTResults.data.attributes.results
+  
+    // iterator for the Object loop
+   let i = 0;
+   let finalResultsObjArr = [];
+
+    // Using forEach to go through the object array so we can store the results in an easier format
+    Object.values(tmpObj).forEach(val=> {
+
+        // push the data into finalResultsObjArr for displaying results.
+        finalResultsObjArr.push({engine:val.engine_name, verdict:val.result});
+        i++;
+    });
+
+    console.log(finalResultsObjArr);
+    // lets save the new object array.
+    // saved as   Engine Name :  Result   
+    localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
+
+   
+
+}
+// Label the input button with id="inputButton" so
+// it can be tied to this.
+$("body").on("click", "#inputButton", function() {
     console.log(this);
 });
 
 
-
-// Might use JQUERY instead
-const buttonHandler = (event) => {
-    console.log(event);
-  
-         
-};
-
-function linkScan(website) {
-    urlScan = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
-};
-
-button.addEventListener("submit", linkScan(website));
 // Function calls
 initialLoad();// Call this to start the website.
+
+
+
+
+// Listeners --We will probably use jquery so won't need them.
+
+
+
