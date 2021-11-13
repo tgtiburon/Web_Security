@@ -254,6 +254,29 @@ processVTData = (savedVTResults) => {
    
 
 }
+
+
+async function request(url) {
+    const api_key = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
+    const endpoint = "https://urlscan.io/api/v1/scan/";
+    const response =  await fetch(endpoint, {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            'Content-Type': 'application/json',
+            'API-Key': api_key
+        },
+        body: JSON.stringify({
+            url: url
+        })
+    });
+
+    console.log(response);
+    return response.json();
+}
+
+
+
 // Label the input button with id="inputButton" so
 // it can be tied to this.
 $("body").on("click", "#inputButton", function() {
