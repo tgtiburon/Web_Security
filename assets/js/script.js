@@ -256,24 +256,34 @@ processVTData = (savedVTResults) => {
 }
 
 
-async function request(url) {
-    const api_key = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
-    const endpoint = "https://urlscan.io/api/v1/scan/";
-    const response =  await fetch(endpoint, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            'Content-Type': 'application/json',
-            'API-Key': api_key
-        },
-        body: JSON.stringify({
-            url: url
-        })
-    });
+// async function request(url) {
+//     const api_key = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
+//     const endpoint = "https://urlscan.io/api/v1/scan/";
+//     const response =  await fetch(endpoint, {
+//         method: "POST",
+//         mode: "cors",
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'API-Key': api_key
+//         },
+//         body: JSON.stringify({
+//             url: url
+//         })
+//     });
 
-    console.log(response);
-    return response.json();
+//     console.log(response);
+//     return response.json();
+// }
+
+async function getNews(){
+    let endpoint = " https://hacker-news.firebaseio.com/v0/beststories";
+
+    let request = await fetch(endpoint)
+    console.log(request);
+    return request.json()
+    
 }
+
 
 
 
