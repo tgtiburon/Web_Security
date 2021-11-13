@@ -276,20 +276,23 @@ processVTData = (savedVTResults) => {
 // }
 
 async function getNews(){
-    let times = "bPGmLuFhAK3zHxsoKOOxXXAcTGKsSrZ0";
-    let endpoint = " https://api.nytimes.com/svc/suggest/v2/timestags?query=technology&api-key=" + times;
+    const endpoint = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key=gx3ZiB0uV9hM9QFpzZp2tyXKZs8pnpj0";
 
-    let info = {
-        method: "POST",
-        mode: "cors",
+    const options = {
+        method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Accept": "application/json"
         }
     }
 
-    let request = await fetch(endpoint, info)
-    console.log(request);
-    return request.json()
+    const request = await fetch(endpoint, options)
+    .then(function(response){
+        if(response) {
+            response.json().then(function(data){
+                console.log(data);
+            })
+        }
+    })
     
 }
 
