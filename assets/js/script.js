@@ -47,7 +47,7 @@ let loadSavedData = function() {
         // We use the ID by sending it to virustotal, which it uses to analyze the url.
        savedVTID = JSON.parse(localStorage.getItem("savedVTID"));
     
-       console.log("savedVTID = " + savedVTID)
+       //console.log("savedVTID = " + savedVTID)
     }
 
     savedVTResults = localStorage.getItem("savedVTResults");
@@ -58,8 +58,8 @@ let loadSavedData = function() {
         // load and parse savedVTResults -- This is the saved results from virus
         // total after we sent it for analysis.
        let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
-        console.log("savedVTResults = "  );
-        console.log(savedVTResults);
+       // console.log("savedVTResults = "  );
+      //  console.log(savedVTResults);
         processVTData(savedVTResults);
     }
    // finalResultsObjArr
@@ -70,8 +70,8 @@ let loadSavedData = function() {
     }else {
         // load and parse savedVTResults
        let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
-        console.log("finalResultsObjArr = "  );
-        console.log(finalResultsObjArr);
+      //  console.log("finalResultsObjArr = "  );
+       // console.log(finalResultsObjArr);
         
     }
 
@@ -95,6 +95,7 @@ const webSiteGetID  = (/*url*/) => {
     // set up the headers
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
+    //myHeaders = {"Content-Type" : "application/json", "API-Key" : yourVaribleForAPI};
     // debug info
     //console.log(formData);
     //console.log(myHeaders);
@@ -103,7 +104,8 @@ const webSiteGetID  = (/*url*/) => {
         method: 'POST',
         headers: myHeaders,
         body: formData,
-        mode: 'cors'    
+        mode: 'cors' 
+          
     }
    // Try and fetch the id of the website
    fetch(myRequestURL, myRequestObject).then(function(response){ 
@@ -156,7 +158,7 @@ const webSiteScan = (savedVTID) => {
     // try and fetch the analysis of the url
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
-    console.log(response);
+    //console.log(response);
         if(response.ok) {
             // it worked parse and store the data
         
@@ -182,6 +184,71 @@ const webSiteScan = (savedVTID) => {
 }// end webSiteScan
 
 
+const urlScanIO = () => {
+
+    // curl -H "Content-Type: application/json" -H "API-Key: 4929f2c5-ed32-477f-b97e-bf05771c34a5" "https://urlscan.io/user/quotas/"
+    tmpAPI = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
+    // website we want to scan.  We will have input box later
+    let myRequestURL = "https:urlscan.io/api/v1/scan/";
+
+   // need to submit as a FormData object
+    let formData = new FormData();
+   // formData.append('url', 'www.google.com');
+   // formData.append("visibility", "public");
+
+    formData= {"url":"www.google.com", "visibility":"public"};
+    // set up the headers
+    let myHeaders = new Headers();
+
+    myHeaders = { "Content-Type": "application/json","API-Key" : tmpAPI };
+    //myHeaders = {"Content-Type" : "application/json", "API-Key" : yourVaribleForAPI};
+    // debug info
+    //console.log(formData);
+    //console.log(myHeaders);
+    //Create the myRequestObject
+    console.log( formData);
+    myRequestObject = {
+        method: 'POST',
+        headers:myHeaders,
+        data: formData,
+       // body:formData,
+       // url: formData,
+      // body: myRequestURL,
+        mode: 'cors' 
+          
+    }
+    console.log(myRequestObject);
+   // Try and fetch the id of the website
+   //fetch(myRequestURL, myRequestObject).then(function(response){ 
+    fetch( myRequestURL, myRequestObject).then(function(response){ 
+ 
+    console.log(response);
+        if(response.ok) {
+          // it worked so save the id
+            response.json().then(function(data) {
+
+                // Virus total sends us the ID of the URL 
+                console.log("Got good response");
+                console.log(data);
+             
+               // savedVTID = data.data.id;
+                  
+               // localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
+                // Now we send the special ID virus total sent us, back to them to analyze
+                // I am not sure why they don't do it all in one step.  
+               // webSiteScan(savedVTID);
+            
+            });
+        } else {
+            //it failed
+            console.log("WebsiteGetID failed to get an ID!");
+        }
+    });
+
+
+
+
+}
 /*  Function: processVTData
     => Takes the data from the analyze call at VT
     and puts it into easy to use objects or array??
@@ -212,7 +279,7 @@ processVTData = (savedVTResults) => {
         i++;
     });
 
-    console.log(finalResultsObjArr);
+    //console.log(finalResultsObjArr);
     // lets save the new object array.
     // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
