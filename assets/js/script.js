@@ -261,7 +261,7 @@ async function request(url) {
     const endpoint = "https://urlscan.io/api/v1/scan/";
     const response =  await fetch(endpoint, {
         method: "POST",
-        mode: "no-cors",
+        mode: "cors",
         headers: {
             'Content-Type': 'application/json',
             'API-Key': api_key
