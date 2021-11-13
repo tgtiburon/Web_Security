@@ -183,7 +183,71 @@ const webSiteScan = (savedVTID) => {
    
 }// end webSiteScan
 
+const urlAjax = () => {
+    //debugger;
 
+     // curl -H "Content-Type: application/json" -H "API-Key: 4929f2c5-ed32-477f-b97e-bf05771c34a5" "https://urlscan.io/user/quotas/"
+     tmpAPI = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
+     // website we want to scan.  We will have input box later
+    // let myRequestURL = "https:urlscan.io/api/v1/scan/";
+    let myRequestURL = "https://urlscan.io/api/v1/search/?query=domain:urlscan.io";
+
+      // need to submit as a FormData object
+    let formData = new FormData();
+    // formData.append('url', 'www.google.com');
+    // formData.append("visibility", "public");
+ 
+     formData= {"url":"www.google.com", "visibility":"public"};
+     // set up the headers
+     let myHeaders = new Headers();
+    //myHeaders = { "API-Key" : tmpAPI };
+ 
+   myHeaders = { "Content-Type": "application/json","API-Key" : tmpAPI };
+   // myHeaders = { "Content-Type": "application/json","API-Key" : tmpAPI, "Access-Control-Allow-Origin": "http://127.0.0.1:5500", "Access-Control-Allow-Credentials": "true" };
+   // myHeaders = { "Content-Type": "application/json","API-Key" : tmpAPI, "Access-Control-Allow-Origin": "http://127.0.0.1:5500", "Access-Control-Allow-Credentials": "true" };
+
+
+    // myHeaders = {"Content-Type" : "application/json", "API-Key" : yourVaribleForAPI};
+     // debug info
+     //console.log(formData);
+     //console.log(myHeaders);
+     //Create the myRequestObject
+     console.log("below is formData");
+     console.log( formData);
+     myRequestObject = {
+        // dataType: 'jsonp',
+         method: 'POST',
+         headers:myHeaders,
+         data: formData,
+         body:formData,
+        // url: formData,
+       // body: myRequestURL,
+      //credentials: 'anonymous',
+      //referrerPolicy: 'origin-when-cross-origin',
+        mode: 'cors' 
+           
+     }
+     console.log(myRequestObject);
+
+    // $.post(myRequestURL, myRequestObject, function(data) {
+        $.post(myRequestURL,myRequestObject, function(data) {
+         console.log("It worked");
+         console.log(data);
+
+     })
+     .done(function() {
+         console.log("second success");
+     })
+     .fail (function() {
+         console.log("fail");
+
+     })
+     .always(function() {
+         console.log("finished");
+     });
+
+
+}
 const urlScanIO = () => {
 
     // curl -H "Content-Type: application/json" -H "API-Key: 4929f2c5-ed32-477f-b97e-bf05771c34a5" "https://urlscan.io/user/quotas/"
@@ -196,7 +260,7 @@ const urlScanIO = () => {
    // formData.append('url', 'www.google.com');
    // formData.append("visibility", "public");
 
-    formData= {"url":"www.google.com", "visibility":"public"};
+    formData= '{"url":"www.google.com", "visibility":"public"}';
     // set up the headers
     let myHeaders = new Headers();
 
@@ -211,17 +275,23 @@ const urlScanIO = () => {
         method: 'POST',
         headers:myHeaders,
         data: formData,
-       // body:formData,
+      // body:formData,
        // url: formData,
       // body: myRequestURL,
-        mode: 'cors' 
+     // credentials: 'include',
+     //referrerPolicy: 'origin-when-cross-origin',
+        mode: 'no-cors' 
           
     }
     console.log(myRequestObject);
    // Try and fetch the id of the website
    //fetch(myRequestURL, myRequestObject).then(function(response){ 
-    fetch( myRequestURL, myRequestObject).then(function(response){ 
- 
+     //  debugger;
+   // fetch( myRequestURL, myRequestObject).then(function(response){ 
+        // test
+     //   debugger;
+        fetch("https://urlscan.io/api/v1/search/?q=domain:urlscan.io").then(function(response){ 
+
     console.log(response);
         if(response.ok) {
           // it worked so save the id
