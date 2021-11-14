@@ -275,7 +275,7 @@ processVTData = (savedVTResults) => {
 //     return response.json();
 // }
 
-async function getNews(){
+async function getNews() {
     const endpoint = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key=gx3ZiB0uV9hM9QFpzZp2tyXKZs8pnpj0";
 
     const options = {
@@ -286,17 +286,39 @@ async function getNews(){
     }
 
     const request = await fetch(endpoint, options)
-    .then(function(response){
+    .then(function(response) {
         if(response) {
             response.json().then(function(data){
-                console.log(data);
+                displayArticles(data);
             })
         }
     })
     
-}
+};
 
+function displayArticles(data) {
+    // get the first 5 articles
+    for(let i = 0; i < 5; i++) {
+        articleList.push(data.results[i]);
+    }
 
+    // go through the articles and grab the url/article names to display on webpage
+    for(let i = 0; i < articleList.length; i++) {
+        // create the list item to hold the article name/link on each their own line
+        let articleItem = document.createElement("li");
+        document.querySelector("#articles").appendChild(articleItem);
+
+        let articleLink = document.createElement("a");
+        articleLink.textContent = articleList[i].title;
+        articleLink.href = articleList[i].url;
+
+        // attach article names to the div on page
+        articleItem.appendChild(articleLink);
+    }
+
+};
+
+let articleList = []
 
 
 // Label the input button with id="inputButton" so
