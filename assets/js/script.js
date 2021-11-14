@@ -234,6 +234,44 @@ processVTData = (savedVTResults) => {
     // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
 }
+
+/*  Function: displayVTData
+    => Takes the data and displays it in 
+    the Scan_Results div
+    args: finalResultsObjArr
+    return: none
+*/
+
+displayVTData  = (finalResultsObjArr) => {
+
+    // find total non-clean
+
+    for (let i = 0; i < finalResultsObjArr.length; i++) {
+        const element = finalResultsObjArr[i];
+
+        let totalClean = 0;
+        let totalDirty = 0;
+
+        if(finalResultsObjArr === "clean") {
+
+
+        } else {
+
+            
+        }
+        
+    }
+
+
+    // Find total clean
+
+    // Display non-clean
+
+
+    //Display clean
+
+
+}
 // Label the input button with id="inputButton" so
 // it can be tied to this.
 $("body").on("click", "#inputButton", function() {
