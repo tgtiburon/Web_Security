@@ -5,7 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Security</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/> -->
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
 
@@ -14,12 +15,69 @@
 
 <body>
     <!--Just so I know it loaded okay :) -->
-   <h1> Place Holder</h1>
-   
+   <nav class="navbar is-primary is-fixed-top m-0 p-0">
+        <p>Web Security</p>
+
+   </nav>
+   <div class="virusDiv">
+        <div class="columns m-0" id="searchDiv">
+
+            <div class="column is-3">
+                <div class="column input-website">What website do you want to scan?:</div>
+            </div>
+
+            <div class="column is-6">
+                <input class="column"id="srchInput" type="text" placeholder="Enter website address">
+                
+            </div>
+
+        
+            <div class="column">
+
+                <button type="button" class=" " id="srchBtn">Search</button>
+            
+            </div>
+        
+        
+      
+        </div>
+        <div class="resultsDiv">
+            <div class="columns" id="results">
+                <!-- virus scan results will go in here -->
+
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+   </div>
+   <div class="columns p-0 m-0" id="Tech_Stories">
+       <!-- Bryant your results will go in this div -->
+       
+        <p>Technology Articles will go below this</p>
+
+
+
+   </div>
    
    
    
 
+
+
+
+   <footer class="footer p-0 is-primary is-fixed-bottom" id="footer">
+       <div class="content has-text-centered is-primary">
+           <p>
+               <strong>Made by Group 3!</strong>
+           </p>
+       </div>     
+   </footer>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>

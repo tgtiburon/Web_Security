@@ -1,0 +1,50 @@
+
+body {
+    height: 80vh;
+
+    padding-top: 6vh;
+   
+}
+.navbar {
+   justify-content: center;
+  
+   /* border: solid 2px orange; */
+}
+#srchInput {
+    width: 100%;
+    font-size:1.5vw;
+    /* background-color: red; */
+}
+#srchBtn {
+    width: 30%;
+}
+p {
+    font-size: 2rem;
+    
+}
+
+#searchDiv{
+    /* border: solid 2px red; */
+ 
+    height: 8vh;
+}
+.resultsDiv {
+    height: 35vh;
+    /* border: solid 2px pink; */
+}
+
+#Tech_Stories {
+    /* border: solid 2px blue; */
+    min-height: 45vh;
+    height:45vh;
+}
+
+#footer{
+    
+     width: 100%; 
+    
+
+    font-size: 1vw;
+    /* border: 2px solid  yellow */
+    
+}
