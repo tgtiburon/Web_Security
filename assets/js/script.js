@@ -436,7 +436,7 @@ function displayArticles(data) {
     // go through the articles and grab the url/article names to display on webpage
     for(let i = 0; i < articleList.length; i++) {
         // create the list item to hold the article name/link on each their own line
-        let articleItem = document.createElement("li");
+        let articleItem = document.createElement("div");
         document.querySelector("#Tech_Stories").appendChild(articleItem);
 
         let articleLink = document.createElement("a");
@@ -459,3 +459,6 @@ $("body").on("click", "#inputButton", function() {
 
 // Function calls
 initialLoad();// Call this to start the website.
+
+// load news after page load
+getNews();
