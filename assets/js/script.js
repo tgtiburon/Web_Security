@@ -35,7 +35,6 @@ const initialLoad = () => {
 
 let loadSavedData = function() {
     
-
     let savedVTID = localStorage.getItem("savedVTID");
     //no savedVTID make one
     if (!savedVTID) {
@@ -46,7 +45,6 @@ let loadSavedData = function() {
         // We use the ID by sending it to virustotal, which it uses to analyze the url.
        savedVTID = JSON.parse(localStorage.getItem("savedVTID"));
     
-       console.log("savedVTID = " + savedVTID)
     }
 
     savedVTResults = localStorage.getItem("savedVTResults");
@@ -57,11 +55,9 @@ let loadSavedData = function() {
         // load and parse savedVTResults -- This is the saved results from virus
         // total after we sent it for analysis.
        let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
-        console.log("savedVTResults = "  );
-        console.log(savedVTResults);
         processVTData(savedVTResults);
     }
-   // finalResultsObjArr
+ 
     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
     //no savedVTResults
     if (!finalResultsObjArr) {
@@ -69,9 +65,8 @@ let loadSavedData = function() {
     }else {
         // load and parse savedVTResults
        let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
-        console.log("finalResultsObjArr = "  );
-        console.log(finalResultsObjArr);
-        
+      // displayVTData(finalResultsObjArr);
+       
     }
 
    
@@ -90,19 +85,17 @@ const webSiteGetID  = (/*url*/) => {
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    // need to submit as a FormData object
     let formData = new FormData();
-    formData.append('url', 'www.google.com');
+    formData.append('url', 'malware.wicar.org');
     // set up the headers
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
-    // debug info
-    //console.log(formData);
-    //console.log(myHeaders);
-    //Create the myRequestObject
+   
     myRequestObject = {
         method: 'POST',
         headers: myHeaders,
         body: formData,
-        mode: 'cors'    
+        mode: 'cors' 
+          
     }
    // Try and fetch the id of the website
    fetch(myRequestURL, myRequestObject).then(function(response){ 
@@ -113,7 +106,6 @@ const webSiteGetID  = (/*url*/) => {
             response.json().then(function(data) {
 
                 // Virus total sends us the ID of the URL 
-             
                 savedVTID = data.data.id;
                   
                 localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
@@ -126,35 +118,9 @@ const webSiteGetID  = (/*url*/) => {
             //it failed
             console.log("WebsiteGetID failed to get an ID!");
         }
-        console.log(response);
     });
-   
-}// end webSiteScan
 
-
-/*  Function: processVTData
-    => Takes the data from the analyze call at VT
-    and puts it into easy to use objects or array??
-    args: savedVTResults
-    return: none
-*/
-
-processVTData = (savedVTResults) => {
-
-  // debugger;
-  savedVTResults = savedVTResults;
-
-   // let tmpStr = savedVTResults.meta;
-    console.log(savedVTResults.data.attributes.results);
-    let tmpObj = savedVTResults.data.attributes.results
-  
-
-   let i = 0;
-   let finalResultsObjArr = [];
-
-   
-
-    Object.values(tmpObj).forEach(val=> {
+};//End websiteGetID()
 
 
 /*  Function: webSiteScan
@@ -175,12 +141,10 @@ const webSiteScan = (savedVTID) => {
         headers: myHeaders,
         mode: 'cors'    
     }
-    // for debugging
-   // console.log(myRequestURL);
+
     // try and fetch the analysis of the url
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
-    console.log(response);
         if(response.ok) {
             // it worked parse and store the data
         
@@ -191,32 +155,57 @@ const webSiteScan = (savedVTID) => {
                 localStorage.setItem("savedVTResults", JSON.stringify(savedVTResults));
 
                 // Time to process all that data
-                processVTData(savedVTResults);
-            
+                processVTData(savedVTResults);     
             });
 
         } else {
             // it failed.
             console.log("It failed!");
            
-        }
-        //console.log(response);
-    });
-   
+        }  
+    });  
 }// end webSiteScan
 
-    
-        i++;
-    });
-    console.log(finalResultsObjArr);
-    // lets save it
-    localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
 
-   
 
-}
+// Code to scan ny times technology articles
+const storyScan = () => {
 
-/*  Function: processVTData
+    tmpAPI = "A7QoqgMwCbe99GKVGJdTY3zisUsBXdAl";
+  
+    const url9 = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key="+tmpAPI;
+
+   const options = {
+     method: "GET",
+     headers: {
+       "Accept": "application/json"
+     },
+   };
+   fetch(url9, options).then(
+     response => {
+       if (response.ok) {
+         return response.json();
+       }
+       return response.text().then(err => {
+         return Promise.reject({
+           status: response.status,
+           statusText: response.statusText,
+           errorMessage: err,
+         });
+       });
+     })
+     .then(data => {
+       console.log(data);
+     })
+     .catch(err => {
+       console.error(err);
+     });
+ }
+
+
+
+
+ /*  Function: processVTData
     => Takes the data from the analyze call at VT
     and puts it into easy to use objects or array??
     args: savedVTResults
@@ -228,52 +217,194 @@ processVTData = (savedVTResults) => {
     // storing the savedVTResults sent to the function into a variable with 
     // the same name
     savedVTResults = savedVTResults;
-
-    //console.log(savedVTResults.data.attributes.results);
     // We are turning the results into a temporary object so we can 
     // use forEach to loop through it later.
     let tmpObj = savedVTResults.data.attributes.results
-  
     // iterator for the Object loop
-   let i = 0;
-   let finalResultsObjArr = [];
-
+    let i = 0;
+    let finalResultsObjArr = [];
+    let dirtyResults = [];
+    let totalClean = 0;
+    let totalDirty = 0;
+//debugger;
     // Using forEach to go through the object array so we can store the results in an easier format
     Object.values(tmpObj).forEach(val=> {
 
         // push the data into finalResultsObjArr for displaying results.
         finalResultsObjArr.push({engine:val.engine_name, verdict:val.result});
+
+        // Lets analyze the data 
+        if(val.result === "clean" || val.result === "unrated") {
+            totalClean++
+        } else {
+            totalDirty++
+            dirtyResults.push({engine:val.engine_name, verdict:val.result});
+
+        }
+       // console.log("val.result= " + val.result);
+      //  console.log("totalClean= " + totalClean);
+       // console.log("totalDirty= " + totalDirty);
+        
+
         i++;
     });
+  //  console.log(dirtyResults);
 
-    console.log(finalResultsObjArr);
+
+
+
+//SCAN SUMMARY LEFT COLUMN
+let tmpObj2 =  savedVTResults.data.attributes.stats;
+let objName1 = "";
+let objName2 = "";
+// objName1 = $("<div>")
+//     .addClass("column is-3 is-12-mobile")
+//     .attr("id", "scan_summary");
+// $("#virusResults").append(objName1);
+objName1 = $("<ul>")
+     .addClass("column  ml-2 mt-4")
+     .text("Scan Summary");
+
+ $("#scan_summary").append(objName1);
+//debugger;
+  //objName1 = $("")
+  objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Suspicious: " + tmpObj2.suspicious);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
+  objName1.append(objName2);
+
+//debugger;
+  // RIGHT COLUMN Flagged engines  make a div for it
+//   objName1 = $("<div>")
+//     .addClass("columns is-9 ml-2 mt-4 is-multiline")
+//     .attr("id", "card_holder");
+//   $("#virusResults").append(objName1);
+
+  i=0;
+  console.log(dirtyResults);
+
+  //debugger;
+  
+  Object.values(dirtyResults).forEach(val=> {
+    console.log("in forEach " + i);
+    objName1 = "";
+    objName2 = "";
+    objName3 = "";
+    objName4 = "";
+
+      //build a card for each one
+      objName1 = $("<div>")
+        .addClass("card is-6 p-0 mt-1 mr-1 is-4-tablet is-half-mobile");
+       // .text(val.engine + ": \n  "+ val.verdict)
+       $("#card_holder").append(objName1);
+
+    objName2 = $("<div>")
+       .addClass("card-content is-1 p-1 m-1 is-half-mobile");
+      // .text(val.engine + ": \n  "+ val.verdict)
+      $(objName1).append(objName2);
+
+      //build a card for each one
+      objName3 = $("<div>")
+        .addClass("content-title is-4 p-0 m-0")
+       // .text(val.engine + ": \n  "+ val.verdict)
+        .text(val.engine + ": ");
+    $(objName2).append(objName3);
+
+      
+      //  .attr("card-color", "red");
+     objName4 = $("<div>")
+        .addClass("subtitle is-6 m-0 p-0")
+        .text(val.verdict);
+        $(objName2).append(objName4);
+
+  
+  //  $(".card").append(objName2);
+  //  $(".card").append(objName3);
+
+  
+//dirtyResults.push({engine:val.engine_name, verdict:val.result});
+
+
+
+
+    i++;
+});
+
+
+    console.log(savedVTResults.data.attributes.stats.harmless);
+
+
+
+
+    // Lets display the data
+   
+
+
+
+
+    console.log("totalClean= " + totalClean);
+    console.log("totalDirty= " + totalDirty);
+
     // lets save the new object array.
     // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
-
-   
-
 }
 
+/*  Function: displayVTData
+    => Takes the data and displays it in 
+    the Scan_Results div
+    args: finalResultsObjArr
+    return: none
+*/
 
-// async function request(url) {
-//     const api_key = "4929f2c5-ed32-477f-b97e-bf05771c34a5";
-//     const endpoint = "https://urlscan.io/api/v1/scan/";
-//     const response =  await fetch(endpoint, {
-//         method: "POST",
-//         mode: "cors",
-//         headers: {
-//             'Content-Type': 'application/json',
-//             'API-Key': api_key
-//         },
-//         body: JSON.stringify({
-//             url: url
-//         })
-//     });
+// displayVTData  = (finalResultsObjArr) => {
 
-//     console.log(response);
-//     return response.json();
-// }
+//     // don't do this
+//     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
+// debugger;
+//     // find total non-clean
+//     finalResultsObjArr = finalResultsObjArr;
+    
+//     let totalClean = 0;
+//     let totalDirty = 0;
+
+//     for (let i = 0; i < finalResultsObjArr.length; i++) {
+//         const element = finalResultsObjArr[i];
+
+
+//         if(finalResultsObjArr[i].verdict === "clean") {
+//             totalClean = totalClean + 1;
+
+
+
+//         } else {
+
+            
+//         }
+
+        
+//     }
+  
+
+
+    // Find total clean
+
+    // Display non-clean
+
+
+    //Display clean
+
+
+//}
+// Label the input button with id="inputButton" so
+// it can be tied to this.
+
+
+let articleList = []
 
 async function getNews() {
     const endpoint = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key=gx3ZiB0uV9hM9QFpzZp2tyXKZs8pnpj0";
@@ -306,7 +437,7 @@ function displayArticles(data) {
     for(let i = 0; i < articleList.length; i++) {
         // create the list item to hold the article name/link on each their own line
         let articleItem = document.createElement("li");
-        document.querySelector("#articles").appendChild(articleItem);
+        document.querySelector("#Tech_Stories").appendChild(articleItem);
 
         let articleLink = document.createElement("a");
         articleLink.textContent = articleList[i].title;
@@ -318,11 +449,9 @@ function displayArticles(data) {
 
 };
 
-let articleList = []
 
 
-// Label the input button with id="inputButton" so
-// it can be tied to this.
+
 $("body").on("click", "#inputButton", function() {
     console.log(this);
 });
@@ -330,11 +459,3 @@ $("body").on("click", "#inputButton", function() {
 
 // Function calls
 initialLoad();// Call this to start the website.
-
-
-
-
-// Listeners --We will probably use jquery so won't need them.
-
-
-

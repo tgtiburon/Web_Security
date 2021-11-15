@@ -1,0 +1,82 @@
+
+body {
+    height: 80vh;
+
+    padding-top: 6vh;
+   
+}
+.navbar {
+   justify-content: center;
+  
+   /* border: solid 2px orange; */
+}
+#srchInput {
+    width: 100%;
+    font-size:1.5vw;
+    /* background-color: red; */
+}
+#srchBtn {
+    width: 50%;
+    height: 100%;
+}
+#card_holder {
+    overflow-y: scroll;
+    /* height: 25vh; */
+    border: 2px solid orange;
+}
+.card {
+    width: 15vw;
+    height: 8vh;
+    background-color: yellow;
+}
+#searchDiv {
+    border: 2px solid blue;
+}
+#scan_summary {
+    border: 2px solid green;
+}
+.card-header-title {
+    /* font-size: 1vw; */
+}
+p {
+    /* font-size: 2rem; */
+    
+}
+ul {
+    font-weight: bolder;
+}
+li {
+    font-weight: normal;
+}
+
+#searchDiv{
+    /* border: solid 2px red; */
+ 
+    height: 8vh;
+}
+.virusDiv {
+    /* max-height: 40vh; */
+    border: solid 2px black;
+    min-height: 45vh;
+}
+.articleDiv {
+    /* max-height: 45vh; */
+    border: solid 2px pink;
+    min-height: 45vh;
+}
+
+#Tech_Stories {
+    /* border: solid 2px blue; */
+    /* min-height: 45vh; */
+    /* height:40vh; */
+}
+
+#footer{
+    
+     width: 100%; 
+    
+
+    font-size: 1vw;
+    /* border: 2px solid  yellow */
+    
+}
