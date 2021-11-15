@@ -66,6 +66,7 @@ let loadSavedData = function() {
     }else {
         // load and parse savedVTResults
        let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
+      // displayVTData(finalResultsObjArr);
        
     }
 
@@ -85,7 +86,7 @@ const webSiteGetID  = (/*url*/) => {
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    // need to submit as a FormData object
     let formData = new FormData();
-    formData.append('url', 'www.google.com');
+    formData.append('url', 'malware.wicar.org');
     // set up the headers
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
@@ -204,7 +205,8 @@ const storyScan = () => {
 
 
 
-/*  Function: processVTData
+
+ /*  Function: processVTData
     => Takes the data from the analyze call at VT
     and puts it into easy to use objects or array??
     args: savedVTResults
@@ -222,14 +224,132 @@ processVTData = (savedVTResults) => {
     // iterator for the Object loop
     let i = 0;
     let finalResultsObjArr = [];
-
+    let dirtyResults = [];
+    let totalClean = 0;
+    let totalDirty = 0;
+//debugger;
     // Using forEach to go through the object array so we can store the results in an easier format
     Object.values(tmpObj).forEach(val=> {
 
         // push the data into finalResultsObjArr for displaying results.
         finalResultsObjArr.push({engine:val.engine_name, verdict:val.result});
+
+        // Lets analyze the data 
+        if(val.result === "clean" || val.result === "unrated") {
+            totalClean++
+        } else {
+            totalDirty++
+            dirtyResults.push({engine:val.engine_name, verdict:val.result});
+
+        }
+       // console.log("val.result= " + val.result);
+      //  console.log("totalClean= " + totalClean);
+       // console.log("totalDirty= " + totalDirty);
+        
+
         i++;
     });
+  //  console.log(dirtyResults);
+
+
+
+
+//SCAN SUMMARY LEFT COLUMN
+let tmpObj2 =  savedVTResults.data.attributes.stats;
+let objName1 = "";
+let objName2 = "";
+// objName1 = $("<div>")
+//     .addClass("column is-3 is-12-mobile")
+//     .attr("id", "scan_summary");
+// $("#virusResults").append(objName1);
+objName1 = $("<ul>")
+     .addClass("column  ml-2 mt-4")
+     .text("Scan Summary");
+
+ $("#scan_summary").append(objName1);
+//debugger;
+  //objName1 = $("")
+  objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Suspicious: " + tmpObj2.suspicious);
+  objName1.append(objName2);
+  objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
+  objName1.append(objName2);
+
+//debugger;
+  // RIGHT COLUMN Flagged engines  make a div for it
+//   objName1 = $("<div>")
+//     .addClass("columns is-9 ml-2 mt-4 is-multiline")
+//     .attr("id", "card_holder");
+//   $("#virusResults").append(objName1);
+
+  i=0;
+  console.log(dirtyResults);
+
+  //debugger;
+  
+  Object.values(dirtyResults).forEach(val=> {
+    console.log("in forEach " + i);
+    objName1 = "";
+    objName2 = "";
+    objName3 = "";
+    objName4 = "";
+
+      //build a card for each one
+      objName1 = $("<div>")
+        .addClass("card is-6 p-0 mt-1 mr-1 is-4-tablet is-half-mobile");
+       // .text(val.engine + ": \n  "+ val.verdict)
+       $("#card_holder").append(objName1);
+
+    objName2 = $("<div>")
+       .addClass("card-content is-1 p-1 m-1 is-half-mobile");
+      // .text(val.engine + ": \n  "+ val.verdict)
+      $(objName1).append(objName2);
+
+      //build a card for each one
+      objName3 = $("<div>")
+        .addClass("content-title is-4 p-0 m-0")
+       // .text(val.engine + ": \n  "+ val.verdict)
+        .text(val.engine + ": ");
+    $(objName2).append(objName3);
+
+      
+      //  .attr("card-color", "red");
+     objName4 = $("<div>")
+        .addClass("subtitle is-6 m-0 p-0")
+        .text(val.verdict);
+        $(objName2).append(objName4);
+
+  
+  //  $(".card").append(objName2);
+  //  $(".card").append(objName3);
+
+  
+//dirtyResults.push({engine:val.engine_name, verdict:val.result});
+
+
+
+
+    i++;
+});
+
+
+    console.log(savedVTResults.data.attributes.stats.harmless);
+
+
+
+
+    // Lets display the data
+   
+
+
+
+
+    console.log("totalClean= " + totalClean);
+    console.log("totalDirty= " + totalDirty);
+
     // lets save the new object array.
     // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
@@ -242,25 +362,34 @@ processVTData = (savedVTResults) => {
     return: none
 */
 
-displayVTData  = (finalResultsObjArr) => {
+// displayVTData  = (finalResultsObjArr) => {
 
-    // find total non-clean
+//     // don't do this
+//     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
+// debugger;
+//     // find total non-clean
+//     finalResultsObjArr = finalResultsObjArr;
+    
+//     let totalClean = 0;
+//     let totalDirty = 0;
 
-    for (let i = 0; i < finalResultsObjArr.length; i++) {
-        const element = finalResultsObjArr[i];
-
-        let totalClean = 0;
-        let totalDirty = 0;
-
-        if(finalResultsObjArr === "clean") {
+//     for (let i = 0; i < finalResultsObjArr.length; i++) {
+//         const element = finalResultsObjArr[i];
 
 
-        } else {
+//         if(finalResultsObjArr[i].verdict === "clean") {
+//             totalClean = totalClean + 1;
+
+
+
+//         } else {
 
             
-        }
+//         }
+
         
-    }
+//     }
+  
 
 
     // Find total clean
@@ -271,7 +400,7 @@ displayVTData  = (finalResultsObjArr) => {
     //Display clean
 
 
-}
+//}
 // Label the input button with id="inputButton" so
 // it can be tied to this.
 $("body").on("click", "#inputButton", function() {
