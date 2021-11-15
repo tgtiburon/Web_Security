@@ -22,6 +22,12 @@ p {
     font-size: 2rem;
     
 }
+ul {
+    font-weight: bolder;
+}
+li {
+    font-weight: normal;
+}
 
 #searchDiv{
     /* border: solid 2px red; */
