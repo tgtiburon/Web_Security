@@ -19,51 +19,62 @@
         <p>Web Security</p>
 
    </nav>
-   <div class="virusDiv">
-        <div class="columns m-0" id="searchDiv">
+   <div class="Main column">
+        <div class="virusDiv column">
+            <div class="searchDiv columns m-0" id="searchDiv">
 
-            <div class="column is-3">
-                <div class="column input-website">What website do you want to scan?:</div>
+                <div class="column input-website is-3">What website do you want to scan?
+                    <!-- <div class="column input-website">What website do you want to scan?:</div> -->
+                </div>
+
+                <input class="column is-6 input" type="text" placeholder="Enter Website Address">
+                    <!-- <input class="column"id="srchInput" type="text" placeholder="Enter website address"> -->
+                    
+            </input>
+
+                <button class="button" class= "column is-3" id="srchBtn">Search
+                    <!-- <button type="button" class="column " id="srchBtn">Search</button> -->
+                </button>
+
             </div>
+            <div class="resultsDiv column">
+                <div class="column" id="virusResults">
+                    <div class="column is-3" id="scan_summary">
+                        
 
-            <div class="column is-6">
-                <input class="column"id="srchInput" type="text" placeholder="Enter website address">
-                
+                    </div>
+                    <div class="card_holder columns is-9 ml-2 mt-4 is-multiline" id="card_holder">
+
+                    </div>
+                    <!-- virus scan results will go in here -->
+
+                </div>
+
+
+
             </div>
+        </div>
 
-        
-            <div class="column">
 
-                <button type="button" class=" " id="srchBtn">Search</button>
+   
+        <div class="articleDiv column is-12">
+
+            <div class="columns p-0 m-0" id="Tech_Stories">
+                <!-- Bryant your results will go in this div -->
             
-            </div>
-        
-        
-      
-        </div>
-        <div class="resultsDiv">
-            <div class="columns" id="virusResults">
-                <!-- virus scan results will go in here -->
-
-
-
+                <p>Technology Articles will go below this</p>
+    
+    
+    
             </div>
 
 
 
-        </div>
+
+         </div>
     </div>
-
-
-   </div>
-   <div class="columns p-0 m-0" id="Tech_Stories">
-       <!-- Bryant your results will go in this div -->
-       
-        <p>Technology Articles will go below this</p>
-
-
-
-   </div>
+  
+   
    
    
    

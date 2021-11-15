@@ -249,7 +249,7 @@ processVTData = (savedVTResults) => {
 
         i++;
     });
-    console.log(dirtyResults);
+  //  console.log(dirtyResults);
 
 
 
@@ -258,16 +258,17 @@ processVTData = (savedVTResults) => {
 let tmpObj2 =  savedVTResults.data.attributes.stats;
 let objName1 = "";
 let objName2 = "";
-objName1 = $("<div>")
-    .addClass("column is-2")
-    .attr("id", "scan_summary");
-$("#virusResults").append(objName1);
+// objName1 = $("<div>")
+//     .addClass("column is-3 is-12-mobile")
+//     .attr("id", "scan_summary");
+// $("#virusResults").append(objName1);
 objName1 = $("<ul>")
-    .addClass("column  ml-2 mt-4")
-    .text("Scan Summary");
+     .addClass("column  ml-2 mt-4")
+     .text("Scan Summary");
 
-$("#scan_summary").append(objName1);
-  
+ $("#scan_summary").append(objName1);
+//debugger;
+  //objName1 = $("")
   objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
   objName1.append(objName2);
   objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
@@ -277,24 +278,54 @@ $("#scan_summary").append(objName1);
   objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
   objName1.append(objName2);
 
-
+//debugger;
   // RIGHT COLUMN Flagged engines  make a div for it
-  objName1 = $("<div>")
-    .addClass("columns is-9 ml-2 mt-4 is-multiline")
-    .attr("id", "card_holder");
-  $("#virusResults").append(objName1);
+//   objName1 = $("<div>")
+//     .addClass("columns is-9 ml-2 mt-4 is-multiline")
+//     .attr("id", "card_holder");
+//   $("#virusResults").append(objName1);
 
+  i=0;
+  console.log(dirtyResults);
 
+  //debugger;
+  
   Object.values(dirtyResults).forEach(val=> {
-    console.log(dirtyResults)
+    console.log("in forEach " + i);
+    objName1 = "";
+    objName2 = "";
+    objName3 = "";
+    objName4 = "";
 
       //build a card for each one
       objName1 = $("<div>")
-      .addClass("notification is-danger is-light is-2 p-1 m-1")
-      .text(val.engine + ":  "+ val.verdict)
+        .addClass("card is-6 p-0 mt-1 mr-1 is-4-tablet is-half-mobile");
+       // .text(val.engine + ": \n  "+ val.verdict)
+       $("#card_holder").append(objName1);
+
+    objName2 = $("<div>")
+       .addClass("card-content is-1 p-1 m-1 is-half-mobile");
+      // .text(val.engine + ": \n  "+ val.verdict)
+      $(objName1).append(objName2);
+
+      //build a card for each one
+      objName3 = $("<div>")
+        .addClass("content-title is-4 p-0 m-0")
+       // .text(val.engine + ": \n  "+ val.verdict)
+        .text(val.engine + ": ");
+    $(objName2).append(objName3);
+
       
-      .attr("card-color", "red");
-    $("#card_holder").append(objName1);
+      //  .attr("card-color", "red");
+     objName4 = $("<div>")
+        .addClass("subtitle is-6 m-0 p-0")
+        .text(val.verdict);
+        $(objName2).append(objName4);
+
+  
+  //  $(".card").append(objName2);
+  //  $(".card").append(objName3);
+
   
 //dirtyResults.push({engine:val.engine_name, verdict:val.result});
 

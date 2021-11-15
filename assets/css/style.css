@@ -16,10 +16,30 @@ body {
     /* background-color: red; */
 }
 #srchBtn {
-    width: 30%;
+    width: 50%;
+    height: 100%;
+}
+#card_holder {
+    overflow-y: scroll;
+    /* height: 25vh; */
+    border: 2px solid orange;
+}
+.card {
+    width: 15vw;
+    height: 8vh;
+    background-color: yellow;
+}
+#searchDiv {
+    border: 2px solid blue;
+}
+#scan_summary {
+    border: 2px solid green;
+}
+.card-header-title {
+    /* font-size: 1vw; */
 }
 p {
-    font-size: 2rem;
+    /* font-size: 2rem; */
     
 }
 ul {
@@ -34,15 +54,21 @@ li {
  
     height: 8vh;
 }
-.resultsDiv {
-    height: 35vh;
-    /* border: solid 2px pink; */
+.virusDiv {
+    /* max-height: 40vh; */
+    border: solid 2px black;
+    min-height: 45vh;
+}
+.articleDiv {
+    /* max-height: 45vh; */
+    border: solid 2px pink;
+    min-height: 45vh;
 }
 
 #Tech_Stories {
     /* border: solid 2px blue; */
-    min-height: 45vh;
-    height:45vh;
+    /* min-height: 45vh; */
+    /* height:40vh; */
 }
 
 #footer{
