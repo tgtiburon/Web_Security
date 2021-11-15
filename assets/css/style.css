@@ -45,7 +45,7 @@ section {
 /* Header Start */
 
 header  {
-   background-image: url("../images/hero-bg.jpeg");
+   background-image: url("../images/spider_web.jpg");
    background-size: cover;
    background-position: center;
    background-attachment: fixed;
@@ -59,6 +59,7 @@ header  {
    position: sticky;
    top: 0;
    z-index: 9999;
+   background-color: lightslategray;
 }
 
 header nav ul li a:hover {
