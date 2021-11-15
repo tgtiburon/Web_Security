@@ -299,12 +299,12 @@ objName1 = $("<ul>")
 
       //build a card for each one
       objName1 = $("<div>")
-        .addClass("card is-6 p-0 mt-1 mr-1 is-4-tablet is-half-mobile");
+        .addClass("card p-0 mt-3 mr-3");
        // .text(val.engine + ": \n  "+ val.verdict)
        $("#card_holder").append(objName1);
 
     objName2 = $("<div>")
-       .addClass("card-content is-1 p-1 m-1 is-half-mobile");
+       .addClass("card-content is-1 p-2 m-0 is-half-mobile");
       // .text(val.engine + ": \n  "+ val.verdict)
       $(objName1).append(objName2);
 
