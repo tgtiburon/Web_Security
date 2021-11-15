@@ -1,4 +1,3 @@
-
 console.log("script.js loaded!");
 
 
@@ -403,6 +402,56 @@ objName1 = $("<ul>")
 //}
 // Label the input button with id="inputButton" so
 // it can be tied to this.
+
+
+let articleList = []
+
+async function getNews() {
+    const endpoint = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key=gx3ZiB0uV9hM9QFpzZp2tyXKZs8pnpj0";
+
+    const options = {
+        method: "GET",
+        headers: {
+            "Accept": "application/json"
+        }
+    }
+
+    const request = await fetch(endpoint, options)
+    .then(function(response) {
+        if(response) {
+            response.json().then(function(data){
+                displayArticles(data);
+            })
+        }
+    })
+    
+};
+
+function displayArticles(data) {
+    // get the first 5 articles
+    for(let i = 0; i < 5; i++) {
+        articleList.push(data.results[i]);
+    }
+
+    // go through the articles and grab the url/article names to display on webpage
+    for(let i = 0; i < articleList.length; i++) {
+        // create the list item to hold the article name/link on each their own line
+        let articleItem = document.createElement("li");
+        document.querySelector("#Tech_Stories").appendChild(articleItem);
+
+        let articleLink = document.createElement("a");
+        articleLink.textContent = articleList[i].title;
+        articleLink.href = articleList[i].url;
+
+        // attach article names to the div on page
+        articleItem.appendChild(articleLink);
+    }
+
+};
+
+
+
+
 $("body").on("click", "#inputButton", function() {
     console.log(this);
 });
@@ -410,6 +459,3 @@ $("body").on("click", "#inputButton", function() {
 
 // Function calls
 initialLoad();// Call this to start the website.
-
-
-
