@@ -429,6 +429,7 @@ function displayArticles(data) {
     for(let i = 0; i < articleList.length; i++) {
         // create the list item to hold the article name/link on each their own line
         let articleItem = document.createElement("div");
+        articleItem.classList.add("column");
         document.querySelector("#Tech_Stories").appendChild(articleItem);
 
         let articleLink = document.createElement("a");

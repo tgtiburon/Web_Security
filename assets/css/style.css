@@ -77,7 +77,7 @@ li {
 
 .articleDiv {
     /* max-height: 45vh; */
-    border: solid 2px pink;
+    /* border: solid 2px pink; */
     min-height: 45vh;
 }
 
