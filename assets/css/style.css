@@ -7,61 +7,77 @@ body {
 }
 .navbar {
    justify-content: center;
-  
    /* border: solid 2px orange; */
 }
-#srchInput {
-    width: 100%;
-    font-size:1.5vw;
-    /* background-color: red; */
-}
-#srchBtn {
-    width: 50%;
-    height: 100%;
-}
-#card_holder {
-    overflow-y: scroll;
-    /* height: 25vh; */
-    border: 2px solid orange;
-}
-.card {
-    width: 15vw;
-    height: 8vh;
-    background-color: yellow;
+.navbar p {
+    justify-content: center;
+    font-size: 1.5rem;
 }
 #searchDiv {
-    border: 2px solid blue;
+    /* border: 2px solid blue; */
+    min-height: 8vh;
+    align-items: center;
 }
+
+.input-website {
+    display:flex;
+    font-size:1.1rem;
+    /* text-align: center; */
+    /* background-color: red; */
+}
+.input {
+    text-align: center;
+    /* background-color: red; */
+}
+
+#srchBtn {
+    width: 100%;
+}
+
+/* .virusDiv { */
+    /* max-height: 40vh; */
+    /* border: solid 2px black; */
+    /* min-height: 45vh; */
+/* } */
+
+
+
 #scan_summary {
-    border: 2px solid green;
-}
-.card-header-title {
-    /* font-size: 1vw; */
-}
-p {
-    /* font-size: 2rem; */
-    
+    display: flex;
+    /* border: 2px solid green; */
+    align-items: center;
 }
 ul {
     font-weight: bolder;
+    text-align: center;   
 }
 li {
     font-weight: normal;
 }
 
-#searchDiv{
-    /* border: solid 2px red; */
- 
-    height: 8vh;
+
+#card_holder {
+    /* overflow-y: scroll; */
+    /* border: 2px solid orange; */
+    width: 100%;;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
-.virusDiv {
-    /* max-height: 40vh; */
-    border: solid 2px black;
-    min-height: 45vh;
+.card {
+    background-color: yellow;
+    width: 20%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align:center;
+    /* align-items: center; */
+    /* text-shadow: rgb(255, 0, 0) 1px 0 10px; */
+    
 }
+
 .articleDiv {
     /* max-height: 45vh; */
-    border: solid 2px pink;
+    /* border: solid 2px pink; */
     min-height: 45vh;
 }
 
@@ -74,9 +90,35 @@ li {
 #footer{
     
      width: 100%; 
+    font-size: 1vw;
+    /* border: 2px solid  yellow */    
+}
+
+
+/* Media Query for better mobile responsiveness */
+/* Handeled with Bootstrap */
+@media screen and (max-width: 980px) {
     
 
-    font-size: 1vw;
-    /* border: 2px solid  yellow */
+    /* NO CHANGES NEEDED FOR THIS RESOLUTION */
+         
+}/*980px breakpoint end */
+@media screen and (max-width: 768px) {
+      
+       
+}/*768px breakpoint end */
     
-}
+@media screen and (max-width: 575px) {
+
+    .card-content {
+
+        font-size: .7rem;    
+    }
+    .subtitle {
+        font-size: 9rem;
+    }
+    
+
+
+          
+}/*575px breakpoint end */
