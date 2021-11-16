@@ -3,11 +3,11 @@ console.log("script.js loaded!");
 
 // Variables
 const vTotalInfo = '8cf0ca0342f8870b2601ff6a6292c366162f55ab28d1213baafd6c4f06a2c53a';
-savedVTID = []; //Holds the saved ID from Virus Total 
-savedVTResults = []; //Holds the results from the URL scan
-
-
-
+const vTotalInfo2 = 'a32c9f576baf76b93b4ea264cd363cd499c8cd45c0a9d6d861671cfea6fe2850';
+let savedVTID = []; //Holds the saved ID from Virus Total 
+let savedVTResults = []; //Holds the results from the URL scan
+let userSearch = "";
+let lastWebScan = "";
 
 
 
@@ -20,9 +20,11 @@ savedVTResults = []; //Holds the results from the URL scan
 */
 
 const initialLoad = () => {
+   
     // load saved data so we don't use up api calls
     loadSavedData();
    // processVTData();
+  
 
 
 }//end initialLoad()
@@ -47,16 +49,7 @@ let loadSavedData = function() {
     
     }
 
-    savedVTResults = localStorage.getItem("savedVTResults");
-    //no savedVTResults
-    if (!savedVTResults) {
-        savedVTResults = [];
-    }else {
-        // load and parse savedVTResults -- This is the saved results from virus
-        // total after we sent it for analysis.
-       let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
-        processVTData(savedVTResults);
-    }
+  
  
     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
     //no savedVTResults
@@ -68,6 +61,24 @@ let loadSavedData = function() {
       // displayVTData(finalResultsObjArr);
        
     }
+ 
+    lastWebScan = JSON.parse(localStorage.getItem("lastWebScan"));
+        if(!lastWebScan) {
+            lastWebScan = "none";
+        } else {
+            let lastWebScan = JSON.parse(localStorage.getItem("lastWebScan"));
+        }
+    
+        savedVTResults = localStorage.getItem("savedVTResults");
+        //no savedVTResults
+        if (!savedVTResults) {
+            savedVTResults = [];
+        }else {
+            // load and parse savedVTResults -- This is the saved results from virus
+            // total after we sent it for analysis.
+           let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
+            processVTData(savedVTResults);
+        }
 
    
      
@@ -79,13 +90,14 @@ let loadSavedData = function() {
     return: none
 */
 
-const webSiteGetID  = (/*url*/) => {
+const webSiteGetID  = (userSearch) => {
 
     // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    // need to submit as a FormData object
     let formData = new FormData();
-    formData.append('url', 'malware.wicar.org');
+    //formData.append('url', 'malware.wicar.org');
+   formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
     myHeaders = {"X-Apikey" : vTotalInfo };
@@ -97,6 +109,7 @@ const webSiteGetID  = (/*url*/) => {
         mode: 'cors' 
           
     }
+    console.log("myRequestObject" + myRequestObject);
    // Try and fetch the id of the website
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
@@ -107,6 +120,7 @@ const webSiteGetID  = (/*url*/) => {
 
                 // Virus total sends us the ID of the URL 
                 savedVTID = data.data.id;
+                console.log("ID= " + savedVTID);
                   
                 localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
                 // Now we send the special ID virus total sent us, back to them to analyze
@@ -149,11 +163,30 @@ const webSiteScan = (savedVTID) => {
             // it worked parse and store the data
         
             response.json().then(function(data) {
+
+                // Lets see if it actually returned results
+                
            
                 savedVTResults = data;
+
+                // Need to wait for analysis;
+                console.log("Status= "+ savedVTResults.data.attributes.status)
+                let isDone =  savedVTResults.data.attributes.status;
+                if(isDone === "queued") {
+                   
+                    //recall website scan 
+                    console.log("need to wait")
+                    setTimeout(() => {webSiteScan(savedVTID)}, 5000);
+                    $("#card_holder").attr("background-color", "yellow");
+                    $("#card_holder").text("Waiting on analysis...")
+                        .css("color", "orange")
+                        .css("font-size", "40px")
+                        .css("background-color", "yellow");
+                    return;
+                }
                
                 localStorage.setItem("savedVTResults", JSON.stringify(savedVTResults));
-
+                localStorage.setItem("lastWebScan",JSON.stringify(userSearch) );
                 // Time to process all that data
                 processVTData(savedVTResults);     
             });
@@ -205,14 +238,15 @@ const storyScan = () => {
 
 
 
- /*  Function: processVTData
-    => Takes the data from the analyze call at VT
-    and puts it into easy to use objects or array??
+/*  Function: processVTData
+    => Takes the data from the analyze call at VT 
+    and puts it into easy to use objects or array
     args: savedVTResults
     return: none
 */
 
 processVTData = (savedVTResults) => {
+    
 
     // storing the savedVTResults sent to the function into a variable with 
     // the same name
@@ -226,7 +260,7 @@ processVTData = (savedVTResults) => {
     let dirtyResults = [];
     let totalClean = 0;
     let totalDirty = 0;
-//debugger;
+
     // Using forEach to go through the object array so we can store the results in an easier format
     Object.values(tmpObj).forEach(val=> {
 
@@ -241,110 +275,94 @@ processVTData = (savedVTResults) => {
             dirtyResults.push({engine:val.engine_name, verdict:val.result});
 
         }
-       // console.log("val.result= " + val.result);
-      //  console.log("totalClean= " + totalClean);
-       // console.log("totalDirty= " + totalDirty);
+    
+        i++;
+    });
+ 
+    // might not work
+    $("#scan_summary").empty();
+
+    //SCAN SUMMARY LEFT COLUMN
+    let tmpObj2 =  savedVTResults.data.attributes.stats;
+    let objName1 = "";
+    let objName2 = "";
+
+    objName1 = $("<ul>")
+     .addClass("column  ml-2 mt-4")
+     .text("Last Scan Summary");
+
+    $("#scan_summary").append(objName1);
+        if(userSearch === "") {
+            userSearch = lastWebScan;
+        }
+
+        objName2 = $("<li>").text("Site: " + userSearch);
+        objName1.append(objName2);
+        objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
+        objName1.append(objName2);
+        objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
+        objName1.append(objName2);
+        objName2 = $("<li>").text("Suspicious: " + tmpObj2.suspicious);
+        objName1.append(objName2);
+        objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
+        objName1.append(objName2);
+
+        i=0;
+        console.log(dirtyResults);
+
+        // clean the ui
+        $("#card_holder").empty();
+        $("#card_holder").css("background-color", "white")
+            .css("font-size", "1em");
+        Object.values(dirtyResults).forEach(val=> {
+            console.log("in forEach " + i);
+            objName1 = "";
+            objName2 = "";
+            objName3 = "";
+            objName4 = "";
+
+      //build a card for each one
+        objName1 = $("<div>")
+            .addClass("card p-0 m-3");
+
+        $("#card_holder").append(objName1);
+
+        objName2 = $("<div>")
+        .addClass("card-content is-1 p-2 m-0 is-half-mobile");
+        // .text(val.engine + ": \n  "+ val.verdict)
+        $(objName1).append(objName2);
+
+        //build a card for each one
+        objName3 = $("<div>")
+            .addClass("content-title is-4 p-0 m-0")
+        // .text(val.engine + ": \n  "+ val.verdict)
+            .text(val.engine + ": ");
+        $(objName2).append(objName3);
+
         
+        //  .attr("card-color", "red");
+        objName4 = $("<div>")
+            .addClass("subtitle is-6 m-0 p-0")
+            .text(val.verdict);
+        $(objName2).append(objName4);
 
         i++;
     });
-  //  console.log(dirtyResults);
 
+    // No bad results lets display an okay message
+    if(totalDirty === 0) {
+        $("#card_holder").text("Website is safe to use.")
+            .css("color", "green")
+            .css("font-size", "40px");
+           // .css("background-color", "yellow");
 
-
-
-//SCAN SUMMARY LEFT COLUMN
-let tmpObj2 =  savedVTResults.data.attributes.stats;
-let objName1 = "";
-let objName2 = "";
-// objName1 = $("<div>")
-//     .addClass("column is-3 is-12-mobile")
-//     .attr("id", "scan_summary");
-// $("#virusResults").append(objName1);
-objName1 = $("<ul>")
-     .addClass("column  ml-2 mt-4")
-     .text("Scan Summary");
-
- $("#scan_summary").append(objName1);
-//debugger;
-  //objName1 = $("")
-  objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
-  objName1.append(objName2);
-  objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
-  objName1.append(objName2);
-  objName2 = $("<li>").text("Suspicious: " + tmpObj2.suspicious);
-  objName1.append(objName2);
-  objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
-  objName1.append(objName2);
-
-//debugger;
-  // RIGHT COLUMN Flagged engines  make a div for it
-//   objName1 = $("<div>")
-//     .addClass("columns is-9 ml-2 mt-4 is-multiline")
-//     .attr("id", "card_holder");
-//   $("#virusResults").append(objName1);
-
-  i=0;
-  console.log(dirtyResults);
-
-  //debugger;
-  
-  Object.values(dirtyResults).forEach(val=> {
-    console.log("in forEach " + i);
-    objName1 = "";
-    objName2 = "";
-    objName3 = "";
-    objName4 = "";
-
-      //build a card for each one
-      objName1 = $("<div>")
-        .addClass("card p-0 mt-3 mr-3");
-       // .text(val.engine + ": \n  "+ val.verdict)
-       $("#card_holder").append(objName1);
-
-    objName2 = $("<div>")
-       .addClass("card-content is-1 p-2 m-0 is-half-mobile");
-      // .text(val.engine + ": \n  "+ val.verdict)
-      $(objName1).append(objName2);
-
-      //build a card for each one
-      objName3 = $("<div>")
-        .addClass("content-title is-4 p-0 m-0")
-       // .text(val.engine + ": \n  "+ val.verdict)
-        .text(val.engine + ": ");
-    $(objName2).append(objName3);
-
-      
-      //  .attr("card-color", "red");
-     objName4 = $("<div>")
-        .addClass("subtitle is-6 m-0 p-0")
-        .text(val.verdict);
-        $(objName2).append(objName4);
-
-  
-  //  $(".card").append(objName2);
-  //  $(".card").append(objName3);
-
-  
-//dirtyResults.push({engine:val.engine_name, verdict:val.result});
-
-
-
-
-    i++;
-});
+    }
+    
 
 
     console.log(savedVTResults.data.attributes.stats.harmless);
 
-
-
-
     // Lets display the data
-   
-
-
-
 
     console.log("totalClean= " + totalClean);
     console.log("totalDirty= " + totalDirty);
@@ -354,57 +372,31 @@ objName1 = $("<ul>")
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
 }
 
-/*  Function: displayVTData
-    => Takes the data and displays it in 
-    the Scan_Results div
-    args: finalResultsObjArr
-    return: none
-*/
 
-// displayVTData  = (finalResultsObjArr) => {
-
-//     // don't do this
-//     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
-// debugger;
-//     // find total non-clean
-//     finalResultsObjArr = finalResultsObjArr;
-    
-//     let totalClean = 0;
-//     let totalDirty = 0;
-
-//     for (let i = 0; i < finalResultsObjArr.length; i++) {
-//         const element = finalResultsObjArr[i];
-
-
-//         if(finalResultsObjArr[i].verdict === "clean") {
-//             totalClean = totalClean + 1;
-
-
-
-//         } else {
-
-            
-//         }
-
-        
-//     }
-  
-
-
-    // Find total clean
-
-    // Display non-clean
-
-
-    //Display clean
-
-
-//}
 // Label the input button with id="inputButton" so
 // it can be tied to this.
 
 
-let articleList = []
+$("body").on("click", "#srchBtn", function() {
+    console.log(this);
+    userSearch = $("input").val();
+    console.log("userText= " + userSearch);
+    // clear search
+    $("input").val("");
+    webSiteGetID(userSearch);
+});
+
+// Let the user hit enter for the website input
+
+$("input").keypress(function(e) {
+    if (event.which === 13) {
+        console.log("enter hit");
+        $("#srchBtn").trigger("click");
+        return false;
+    }
+});
+  
+  let articleList = []
 
 async function getNews() {
     const endpoint = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key=gx3ZiB0uV9hM9QFpzZp2tyXKZs8pnpj0";
@@ -436,7 +428,8 @@ function displayArticles(data) {
     // go through the articles and grab the url/article names to display on webpage
     for(let i = 0; i < articleList.length; i++) {
         // create the list item to hold the article name/link on each their own line
-        let articleItem = document.createElement("li");
+        let articleItem = document.createElement("div");
+        articleItem.classList.add("column");
         document.querySelector("#Tech_Stories").appendChild(articleItem);
 
         let articleLink = document.createElement("a");
@@ -452,10 +445,9 @@ function displayArticles(data) {
 
 
 
-$("body").on("click", "#inputButton", function() {
-    console.log(this);
-});
-
 
 // Function calls
 initialLoad();// Call this to start the website.
+
+// load news after page load
+getNews();

@@ -27,6 +27,7 @@ body {
 }
 .input {
     text-align: center;
+    /* background-color: red; */
 }
 
 #srchBtn {
@@ -58,21 +59,25 @@ li {
 #card_holder {
     /* overflow-y: scroll; */
     /* border: 2px solid orange; */
+    width: 100%;;
     display:flex;
+    align-items: center;
+    justify-content: center;
 }
 .card {
     background-color: yellow;
-    width: 30%;
+    width: 20%;
     display: flex;
     justify-content: space-evenly;
     text-align:center;
+    /* align-items: center; */
     /* text-shadow: rgb(255, 0, 0) 1px 0 10px; */
     
 }
 
 .articleDiv {
     /* max-height: 45vh; */
-    border: solid 2px pink;
+    /* border: solid 2px pink; */
     min-height: 45vh;
 }
 
