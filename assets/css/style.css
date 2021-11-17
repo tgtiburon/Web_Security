@@ -38,9 +38,12 @@ body {
 
 .input-website {
     display:flex;
-    font-size: 1.5rem;
+    
     color: black;
-    font-size:1.1rem;
+    /* color: #dd2a2a; */
+    /* color:#dd2f2f; */
+    font-size: 1.3rem;
+    font-weight: bolder;
     /* text-align: center; */
     /* background-color: red; */
 }
@@ -119,12 +122,20 @@ li {
     color: black;
     font-weight: bold;
     padding: 0rem;
+
 }
 
 #Tech_Stories {
         /* border: solid 2px blue; */
+        
 }
-
+#timesTitle {
+    padding: 2%;
+    font-size: 1.7rem;
+    text-align:center;
+    font-weight:bolder;
+  
+}
 #Tech_Stories {
     /* border: solid 2px blue; */
     /* min-height: 45vh; */
@@ -138,7 +149,6 @@ li {
     font-family: 'PT Serif', serif;
     color: gray;
     background-color: #89CFF0;
-
     font-size: 1vw;
     /* border: 2px solid  yellow */    
 }

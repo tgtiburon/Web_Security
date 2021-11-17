@@ -312,7 +312,7 @@ processVTData = (savedVTResults) => {
 
         // clean the ui
         $("#card_holder").empty();
-        $("#card_holder").css("background-color", "white")
+        $("#card_holder").css("background-color", "#89CFF0")
             .css("font-size", "1em");
         Object.values(dirtyResults).forEach(val=> {
             console.log("in forEach " + i);
@@ -324,14 +324,18 @@ processVTData = (savedVTResults) => {
       //build a card for each one
       //  objName1 = $("<div>")
       //     .addClass("card p-0 m-3");
+      
       objName1 = $("<div>")
       .addClass("card p-0 m-3")
-      .css("background-color", "yellow")
+     // .css("background-color", "yellow")
+      .css("background-color","#fafa53");
    
       if(val.verdict === "malicious") {
         objName1 = $("<div>")
         .addClass("card p-0 m-3")
-        .css("background-color", "red")
+       // .css("background-color", "red")
+        .css("background-color", "#dd2a2a")
+
 
       }
 
@@ -440,7 +444,7 @@ function displayArticles(data) {
     for(let i = 0; i < articleList.length; i++) {
 
         let box = document.createElement("div");
-        box.classList.add("box");
+        box.classList.add("box", "mx-4");
         
         let article = document.createElement("article");
         article.classList.add("media");
