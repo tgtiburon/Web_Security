@@ -328,7 +328,7 @@ processVTData = (savedVTResults) => {
         $("#card_holder").append(objName1);
 
         objName2 = $("<div>")
-        .addClass("card-content is-1 p-2 m-0 is-half-mobile");
+        .addClass("card-content is-1 p-2 m-0");
         // .text(val.engine + ": \n  "+ val.verdict)
         $(objName1).append(objName2);
 
