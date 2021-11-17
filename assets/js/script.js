@@ -421,6 +421,7 @@ async function getNews() {
         if(response) {
             response.json().then(function(data){
                 displayArticles(data);
+                console.log(data);
             })
         }
     })
@@ -435,16 +436,43 @@ function displayArticles(data) {
 
     // go through the articles and grab the url/article names to display on webpage
     for(let i = 0; i < articleList.length; i++) {
-        // create the list item to hold the article name/link on each their own line
-        let articleItem = document.createElement("div");
-        document.querySelector("#Tech_Stories").appendChild(articleItem);
+
+        let box = document.createElement("div");
+        box.classList.add("box");
+        
+        let article = document.createElement("article");
+        article.classList.add("media");
+
+        let mediaLeft = document.createElement("div");
+        mediaLeft.classList.add("media-left");
+
+        let mediaFigure = document.createElement("figure");
+        mediaFigure.classList.add("image", "is-64x64");
+
+        let img = document.createElement("img");
+        img.src = articleList[i].thumbnail_standard;
+
+        let mediaContent = document.createElement("div");
+        mediaContent.classList.add("media-content");
+
+        let content = document.createElement("div");
+        content.classList.add("media-content");
 
         let articleLink = document.createElement("a");
         articleLink.textContent = articleList[i].title;
         articleLink.href = articleList[i].url;
+        articleLink.classList.add("has-text-weight-bold");
+        articleLink.target = "_blank";
 
-        // attach article names to the div on page
-        articleItem.appendChild(articleLink);
+        document.querySelector("#Tech_Stories").appendChild(box);
+        box.appendChild(article);
+        article.appendChild(mediaLeft);
+        mediaLeft.appendChild(mediaFigure);
+        mediaFigure.appendChild(img);
+        article.appendChild(mediaContent);
+        mediaContent.appendChild(content);
+        content.appendChild(articleLink);
+
     }
 
 };
