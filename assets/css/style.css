@@ -30,7 +30,7 @@ body {
     font-size: 1.5rem;
 }
 #searchDiv {
-    /* border: 2px solid blue; */
+    border: 2px solid blue;
     min-height: 8vh;
     align-items: center;
 }
@@ -110,9 +110,10 @@ li {
 
 .articleDiv {
     /* max-height: 45vh; */
-    /* border: solid 2px pink; */
+    border: solid 2px pink;
     min-height: 45vh;
     background-color: #89CFF0;
+    padding-top: 7%;
 }
 
 .articleDiv p {
@@ -121,15 +122,25 @@ li {
     color: black;
     font-weight: bold;
     padding: 0rem;
+   
 
+}
+
+#traff-cam {
+    margin-left: 10%;
+    border: 2px solid red;
 }
 
 #Tech_Stories {
-        /* border: solid 2px blue; */
+        border: solid 2px blue;
+        width: 25%;
+
         
 }
+
+
 #timesTitle {
-    padding: 2%;
+    padding-bottom: 7%;
     font-size: 1.7rem;
     text-align:center;
     font-weight:bolder;
