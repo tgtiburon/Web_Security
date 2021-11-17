@@ -2,36 +2,56 @@ body {
     height: 80vh;
 
     padding-top: 6vh;
-   
+    background-color: #89CFF0;
+    background-size: cover;
+
 }
+
 .navbar {
    justify-content: center;
+   background-color: #007FFF;
+   padding: 0vh;
    /* border: solid 2px orange; */
 }
 .navbar p {
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 2.0rem;
+    font-weight: bold;
+    color: black;
 }
 #searchDiv {
     /* border: 2px solid blue; */
-    min-height: 8vh;
+    font-size: 0rem;
     align-items: center;
+    font-family: 'Raleway' , sans-serif;
 }
 
 .input-website {
     display:flex;
-    font-size:1.1rem;
+    font-size: 1.5rem;
+    color: black;
     /* text-align: center; */
     /* background-color: red; */
 }
 .input {
     text-align: center;
+    border-color: black;
+    font-size: 1.5rem;
     /* background-color: red; */
 }
 
 #srchBtn {
+    justify-content: center;
     width: 100%;
+    background-color: #007FFF;
+    border-color: #007FFF;
+    border-radius: 0rem;
+    font-weight: bold;
+    font-size: 1.5rem;
+    color: black;
 }
+
+
 
 /* .virusDiv { */
     /* max-height: 40vh; */
@@ -45,6 +65,8 @@ body {
     display: flex;
     /* border: 2px solid green; */
     align-items: center;
+    font-size: 1.5rem;
+    font-family: 'PT Serif', serif;
 }
 ul {
     font-weight: bolder;
@@ -78,10 +100,19 @@ li {
     /* max-height: 45vh; */
     /* border: solid 2px pink; */
     min-height: 45vh;
+    background-color: #89CFF0;
+}
+
+.articleDiv p {
+    font-size: 1.1rem;
+    font-family: 'Raleway' , sans-serif;
+    color: black;
+    font-weight: bold;
+    padding: 0rem;
 }
 
 #Tech_Stories {
-    /* border: solid 2px blue; */
+        /* border: solid 2px blue; */
     /* min-height: 45vh; */
     /* height:40vh; */
 }
@@ -89,7 +120,11 @@ li {
 #footer{
     
      width: 100%; 
-    font-size: 1vw;
+    font-size: 1rem;
+    font-family: 'PT Serif', serif;
+    color: gray;
+    background-color: #89CFF0;
+
     /* border: 2px solid  yellow */    
 }
 
