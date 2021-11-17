@@ -322,8 +322,18 @@ processVTData = (savedVTResults) => {
             objName4 = "";
 
       //build a card for each one
+      //  objName1 = $("<div>")
+      //     .addClass("card p-0 m-3");
+      objName1 = $("<div>")
+      .addClass("card p-0 m-3")
+      .css("background-color", "yellow")
+   
+      if(val.verdict === "malicious") {
         objName1 = $("<div>")
-            .addClass("card p-0 m-3");
+        .addClass("card p-0 m-3")
+        .css("background-color", "red")
+
+      }
 
         $("#card_holder").append(objName1);
 
@@ -334,7 +344,7 @@ processVTData = (savedVTResults) => {
 
         //build a card for each one
         objName3 = $("<div>")
-            .addClass("content-title is-4 p-0 m-0")
+            .addClass("content-title has-text-weight-bold is-4 p-0 m-0")
         // .text(val.engine + ": \n  "+ val.verdict)
             .text(val.engine + ": ");
         $(objName2).append(objName3);
@@ -342,7 +352,7 @@ processVTData = (savedVTResults) => {
         
         //  .attr("card-color", "red");
         objName4 = $("<div>")
-            .addClass("subtitle is-6 m-0 p-0")
+            .addClass("subtitle has-text-weight-bold is-6 m-0 p-0")
             .text(val.verdict);
         $(objName2).append(objName4);
 

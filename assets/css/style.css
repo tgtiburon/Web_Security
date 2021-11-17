@@ -65,7 +65,7 @@ li {
     justify-content: center;
 }
 .card {
-    background-color: yellow;
+    /* background-color: yellow; */
     width: 20%;
     display: flex;
     justify-content: space-evenly;
