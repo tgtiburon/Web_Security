@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 18 outside");
+console.log("version 19 outside");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -129,13 +129,14 @@ const webSiteGetID  = (userSearch) => {
 const options = {
     method: 'POST',
     headers: {
+      "X-Apikey" : vTotalInfo,
       Accept: 'application/json',
-      'Content-Type': 'application/x-www-form-urlencoded',
-      "X-Apikey" : vTotalInfo
+      'Content-Type': 'application/x-www-form-urlencoded'
+      
 
     },
    // body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch})
-   body: new URLSearchParams({url: userSearch})
+   body: new URLSearchParams({url: 'Unknown Type: mixed type', url: userSearch})
     //body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
     
    // body: formData
