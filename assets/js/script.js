@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 24 outside");
+console.log("version 25 outside ");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -102,22 +102,16 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     //let myHeaders = new Headers();
-
     // myHeaders = {"X-Apikey" : vTotalInfo, 
-    //                 "Accept": "application/x-www-form-urlencoded"
-
-               
-                
-            
-            
-    //         };
+    //                 "Accept": "application/json"
+    //                "Content-Type" : "application/x-www-form-urlencoded"       
+    //              };
    
     // myRequestObject = {
     //     method: 'POST',
     //     headers: myHeaders,
     //     body: formData,
-    //     mode: 'cors' 
-          
+    //     mode: 'cors'      
   //  }
   //  console.log(myRequestObject);
    // Try and fetch the id of the website
@@ -134,22 +128,15 @@ const options = {
       'Content-Type': 'application/x-www-form-urlencoded'
       
     },
-   // body: formData,
-    
    // body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch}),
-    body: new URLSearchParams({url : userSearch}),
-    mode: 'cors'
-  // body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
-  // mode:'cors'
-  // body: {url: mySearchURL}
-    //body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
-    
-   // body: formData
+    body: new URLSearchParams({url : userSearch})//,
+   // mode: 'cors'
+ 
   };
   console.log("-------")
   console.log(options);
   
-  //fetch('https://www.virustotal.com/api/v3/urls', options) 
+
    //fetch(myRequestURL, myRequestObject).then(function(response){ 
         fetch(myRequestURL, options).then(function(response){ 
 
