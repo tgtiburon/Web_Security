@@ -106,7 +106,7 @@ const webSiteGetID  = (userSearch) => {
         method: 'POST',
         headers: myHeaders,
         body: formData,
-        mode: 'cors' 
+        mode: 'no-cors' 
           
     }
     console.log("myRequestObject" + myRequestObject);
@@ -153,7 +153,7 @@ const webSiteScan = (savedVTID) => {
     myRequestObject = {
         method: 'GET',
         headers: myHeaders,
-        mode: 'cors'    
+        mode: 'no-cors'    
     }
 
     // try and fetch the analysis of the url
