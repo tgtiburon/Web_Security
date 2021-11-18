@@ -91,6 +91,7 @@ let loadSavedData = function() {
 */
 
 const webSiteGetID  = (userSearch) => {
+    console.log("version 1");
 
     // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
