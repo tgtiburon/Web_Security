@@ -177,11 +177,11 @@ const webSiteScan = (savedVTID) => {
                     //recall website scan 
                     console.log("need to wait")
                     setTimeout(() => {webSiteScan(savedVTID)}, 5000);
-                    $("#card_holder").attr("background-color", "yellow");
+                   // $("#card_holder").attr("background-color", "yellow");
                     $("#card_holder").text("Waiting on analysis...")
-                        .css("color", "orange")
+                        .css("color", "#1D435C")
                         .css("font-size", "40px")
-                        .css("background-color", "yellow");
+                        .css("background-color", "#EFBF1F");
                     return;
                 }
                
