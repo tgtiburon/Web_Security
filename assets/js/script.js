@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 16 outside");
+console.log("version 17 outside");
 
 const webSiteGetID  = (userSearch) => {
    
