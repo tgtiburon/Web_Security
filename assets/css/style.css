@@ -166,7 +166,7 @@ li {
     /* background-color: #89CFF0; */
     background-color: var(--pal2);
     padding-top: 0%;
-    padding-bottom: 2%;
+    padding-bottom: 3%;
 }
 
 .articleDiv p {
@@ -181,7 +181,7 @@ li {
     /* DEBUG BELOW */
     
     color: blanchedalmond;
-    border:3px solid  var(--pal6);
+    border:2px solid  var(--pal6);
     margin-bottom:2%;
     letter-spacing: .1em;
     
@@ -265,6 +265,9 @@ li {
     font-size: 1.3vw;
     letter-spacing: .3em;
     /* border: 2px solid  yellow     */
+    border-top: 1px solid var(--pal6);
+    /* border-top-left-radius: 1.0rem; */
+    /* border-top-right-radius: 1.0rem; */
     
 
 }
