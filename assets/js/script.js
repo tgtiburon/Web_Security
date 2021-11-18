@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 17 outside");
+console.log("version 18 outside");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -101,7 +101,7 @@ const webSiteGetID  = (userSearch) => {
     //formData.append('url', 'malware.wicar.org');
    formData.append('url', userSearch);
     // set up the headers
-    let myHeaders = new Headers();
+    //let myHeaders = new Headers();
 
     // myHeaders = {"X-Apikey" : vTotalInfo, 
     //                 "Accept": "application/x-www-form-urlencoded"
@@ -134,7 +134,8 @@ const options = {
       "X-Apikey" : vTotalInfo
 
     },
-    body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch})
+   // body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch})
+   body: new URLSearchParams({url: userSearch})
     //body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
     
    // body: formData
