@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 19 outside");
+console.log("version 21 outside");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -123,7 +123,7 @@ const webSiteGetID  = (userSearch) => {
    // Try and fetch the id of the website
    //fetch(myRequestURL, myRequestObject).then(function(response){ 
 /////////// ABOVE IS OLD 
-
+//const mySearchURL = new URL(userSearch);
 
 // DEBUG BELOW
 const options = {
@@ -136,7 +136,9 @@ const options = {
 
     },
    // body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch})
-   body: new URLSearchParams({url: 'Unknown Type: mixed type', url: userSearch})
+   body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
+   body: new URLSearchParams({url: userSearch})
+  // body: {url: mySearchURL}
     //body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
     
    // body: formData
