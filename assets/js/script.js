@@ -91,7 +91,7 @@ let loadSavedData = function() {
 */
 
 const webSiteGetID  = (userSearch) => {
-    console.log("version 2");
+    console.log("version 4");
 
     // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
@@ -101,7 +101,7 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "127.0.0.1:5500" };
+    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "*", "Vary":"Origin" };
    
     myRequestObject = {
         method: 'POST',
