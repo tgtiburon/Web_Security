@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 12 outside");
+console.log("version 13 outside");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -134,7 +134,7 @@ const options = {
       "X-Apikey" : vTotalInfo
 
     },
-    body: new URLSearchParams({url: 'Unknown Type: mixed type', url : userSearch})
+    body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch})
    // body: formData
   };
   console.log("-------")
@@ -210,7 +210,7 @@ const webSiteScan = (savedVTID) => {
                    
                     //recall website scan 
                     console.log("need to wait")
-                    setTimeout(() => {webSiteScan(savedVTID)}, 5000);
+                    setTimeout(() => {webSiteScan(savedVTID)}, 7000);
                    // $("#card_holder").attr("background-color", "yellow");
                     $("#card_holder").text("Waiting on analysis...")
                         .css("color", "#1D435C")
