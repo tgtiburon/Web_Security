@@ -91,7 +91,7 @@ let loadSavedData = function() {
 */
 
 const webSiteGetID  = (userSearch) => {
-    console.log("version 1");
+    console.log("version 2");
 
     // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
@@ -101,7 +101,7 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "https://tgtiburon.github.io/" };
+    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "127.0.0.1:5500" };
    
     myRequestObject = {
         method: 'POST',
@@ -110,7 +110,7 @@ const webSiteGetID  = (userSearch) => {
         mode: 'cors' 
           
     }
-    console.log("myRequestObject" + myRequestObject);
+    console.log(myRequestObject);
    // Try and fetch the id of the website
    fetch(myRequestURL, myRequestObject).then(function(response){ 
  
@@ -310,14 +310,14 @@ processVTData = (savedVTResults) => {
         objName1.append(objName2);
 
         i=0;
-        console.log(dirtyResults);
+       // console.log(dirtyResults);
 
         // clean the ui
         $("#card_holder").empty();
         $("#card_holder").css("background-color", "var(--pal2)")
             .css("font-size", "1em");
         Object.values(dirtyResults).forEach(val=> {
-            console.log("in forEach " + i);
+        //    console.log("in forEach " + i);
             objName1 = "";
             objName2 = "";
             objName3 = "";
@@ -381,12 +381,12 @@ processVTData = (savedVTResults) => {
     
 
 
-    console.log(savedVTResults.data.attributes.stats.harmless);
+    //console.log(savedVTResults.data.attributes.stats.harmless);
 
     // Lets display the data
 
-    console.log("totalClean= " + totalClean);
-    console.log("totalDirty= " + totalDirty);
+   // console.log("totalClean= " + totalClean);
+    //console.log("totalDirty= " + totalDirty);
 
     // lets save the new object array.
     // saved as   Engine Name :  Result   
@@ -399,9 +399,9 @@ processVTData = (savedVTResults) => {
 
 
 $("body").on("click", "#srchBtn", function() {
-    console.log(this);
+   // console.log(this);
     userSearch = $("input").val();
-    console.log("userText= " + userSearch);
+   // console.log("userText= " + userSearch);
     // clear search
     $("input").val("");
     webSiteGetID(userSearch);
@@ -411,7 +411,7 @@ $("body").on("click", "#srchBtn", function() {
 
 $("input").keypress(function(e) {
     if (event.which === 13) {
-        console.log("enter hit");
+       // console.log("enter hit");
         $("#srchBtn").trigger("click");
         return false;
     }
