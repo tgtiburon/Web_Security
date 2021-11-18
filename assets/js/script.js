@@ -296,7 +296,8 @@ processVTData = (savedVTResults) => {
             userSearch = lastWebScan;
         }
 
-        objName2 = $("<li>").text("Site: " + userSearch);
+        objName2 = $("<li>").text("Site: " + userSearch)
+            .addClass("siteLI");
         objName1.append(objName2);
         objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
         objName1.append(objName2);
@@ -312,7 +313,7 @@ processVTData = (savedVTResults) => {
 
         // clean the ui
         $("#card_holder").empty();
-        $("#card_holder").css("background-color", "#89CFF0")
+        $("#card_holder").css("background-color", "var(--pal2)")
             .css("font-size", "1em");
         Object.values(dirtyResults).forEach(val=> {
             console.log("in forEach " + i);
@@ -328,13 +329,16 @@ processVTData = (savedVTResults) => {
       objName1 = $("<div>")
       .addClass("card p-0 m-3")
      // .css("background-color", "yellow")
-      .css("background-color","#fafa53");
+     //debug 
+
+      .css("background-color","#EFBF1F");
    
       if(val.verdict === "malicious") {
         objName1 = $("<div>")
         .addClass("card p-0 m-3")
        // .css("background-color", "red")
-        .css("background-color", "#dd2a2a")
+        .css("background-color", "#E43120")
+        .css("background-color", "#E2641B")
 
 
       }
@@ -366,8 +370,10 @@ processVTData = (savedVTResults) => {
     // No bad results lets display an okay message
     if(totalDirty === 0) {
         $("#card_holder").text("Website is safe to use.")
-            .css("color", "green")
-            .css("font-size", "40px");
+            .css("color", "#5FED6E")
+            .css("font-size", "50px")
+            .css("text-shadow", "1px 1px 2px black")
+            .css("font-weight", "bolder");
            // .css("background-color", "yellow");
 
     }
@@ -453,7 +459,7 @@ function displayArticles(data) {
         mediaLeft.classList.add("media-left");
 
         let mediaFigure = document.createElement("figure");
-        mediaFigure.classList.add("image", "is-64x64");
+        mediaFigure.classList.add("image", "is-96x96");
 
         let img = document.createElement("img");
         img.src = articleList[i].thumbnail_standard;
