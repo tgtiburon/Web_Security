@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 6 outside");
+console.log("version 8 outside");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -102,11 +102,12 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
+
     myHeaders = {"X-Apikey" : vTotalInfo, 
-                "Access-Control-Allow-Origin": "*", 
-                "Vary":"Origin",
-                "Access-Control-Allow-Methods": "POST, GET, OPTIONS",
-                "Origin": "https://tgtiburon.github.io/Web_Security/"
+                    "Accept": "application/x-www-form-urlencoded"
+
+               
+                
             
             
             };
