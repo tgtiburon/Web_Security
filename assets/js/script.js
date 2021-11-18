@@ -100,7 +100,7 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "*" };
+    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "https://tgtiburon.github.io/" };
    
     myRequestObject = {
         method: 'POST',
