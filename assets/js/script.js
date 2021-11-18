@@ -89,7 +89,7 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
-console.log("version 25 outside ");
+console.log("version 26 outside ");
 
 const webSiteGetID  = (userSearch) => {
    
@@ -119,6 +119,11 @@ const webSiteGetID  = (userSearch) => {
 /////////// ABOVE IS OLD 
 //const mySearchURL = new URL(userSearch);
 
+
+
+
+
+//debugger;
 // DEBUG BELOW
 const options = {
     method: 'POST',
@@ -138,7 +143,8 @@ const options = {
   
 
    //fetch(myRequestURL, myRequestObject).then(function(response){ 
-        fetch(myRequestURL, options).then(function(response){ 
+      //  fetch(myRequestURL, options).then(function(response){ 
+        fetch('https://www.virustotal.com/api/v3/urls', options).then(function(response){ 
 
 
 // DEBUG ABOVE
