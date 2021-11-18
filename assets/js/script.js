@@ -535,4 +535,4 @@ initialLoad();// Call this to start the website.
 // load news after page load
 
 
-//getNews();
+getNews();
