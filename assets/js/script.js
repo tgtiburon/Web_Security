@@ -89,9 +89,10 @@ let loadSavedData = function() {
     args: URL that needs it's unique ID
     return: none
 */
+console.log("version 5 outside");
 
 const webSiteGetID  = (userSearch) => {
-    console.log("version 4");
+   
 
     // website we want to scan.  We will have input box later
     let myRequestURL = "https://www.virustotal.com/api/v3/urls";
@@ -101,7 +102,7 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "*", "Vary":"Origin" };
+    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin": "*", "Vary":"Origin", "Access-Control-Allow-Methods": "POST, GET, OPTIONS"};
    
     myRequestObject = {
         method: 'POST',
