@@ -1,6 +1,6 @@
 # Web_Security
 
-<img src="./assets/images/traff_cam_2.jpg"
+<img src="./assets/images/Web_Security.PNG"
      alt="A traffic light looking down at a quote." width="960"
       />
 
