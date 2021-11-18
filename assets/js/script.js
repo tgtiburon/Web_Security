@@ -100,13 +100,13 @@ const webSiteGetID  = (userSearch) => {
    formData.append('url', userSearch);
     // set up the headers
     let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo };
+    myHeaders = {"X-Apikey" : vTotalInfo, "Access-Control-Allow-Origin: *" };
    
     myRequestObject = {
         method: 'POST',
         headers: myHeaders,
         body: formData,
-        mode: 'no-cors' 
+        mode: 'cors' 
           
     }
     console.log("myRequestObject" + myRequestObject);
@@ -153,7 +153,7 @@ const webSiteScan = (savedVTID) => {
     myRequestObject = {
         method: 'GET',
         headers: myHeaders,
-        mode: 'no-cors'    
+        mode: 'cors'    
     }
 
     // try and fetch the analysis of the url
