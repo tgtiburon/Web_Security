@@ -133,12 +133,14 @@ const options = {
       Accept: 'application/json',
       'Content-Type': 'application/x-www-form-urlencoded'
       
-
     },
-    body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch}),
+   // body: formData,
+    
+   // body: new URLSearchParams({url: 'Unknown Type: mixed type', 'url' : userSearch}),
+    body: new URLSearchParams({url : userSearch}),
+    mode: 'cors'
   // body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
-  // body: formData, 
-   mode:'cors'
+  // mode:'cors'
   // body: {url: mySearchURL}
     //body: new URLSearchParams({url: 'Unknown Type: mixed type'}),
     
