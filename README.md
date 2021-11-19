@@ -1,7 +1,7 @@
 # Web_Security
 
-<img src="./assets/images/web_security.PNG"
-     alt="The user interface of Web Security." width="960"
+<img src="./assets/images/Web_Security.PNG"
+     alt="A traffic light looking down at a quote." width="960"
       />
 
 

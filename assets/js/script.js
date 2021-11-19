@@ -1,4 +1,4 @@
-console.log("script.js loaded!");
+//console.log("script.js loaded!");
 
 
 // Variables
@@ -21,16 +21,13 @@ let lastWebScan = "";
 
 const initialLoad = () => {
    
-    // load saved data so we don't use up api calls
+    // load saved data to populate the last scan
     loadSavedData();
-   // processVTData();
   
-
-
 }//end initialLoad()
 
 /*  Function: loadSavedData()
-    => loads all saved Data
+    => loads all saved data to populate the last scan
     args: none
     return: none
 */
@@ -49,8 +46,6 @@ let loadSavedData = function() {
     
     }
 
-  
- 
     finalResultsObjArr = localStorage.getItem("finalResultsObjArr");
     //no savedVTResults
     if (!finalResultsObjArr) {
@@ -58,7 +53,6 @@ let loadSavedData = function() {
     }else {
         // load and parse savedVTResults
        let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
-      // displayVTData(finalResultsObjArr);
        
     }
  
@@ -79,9 +73,7 @@ let loadSavedData = function() {
            let savedVTResults = JSON.parse(localStorage.getItem("savedVTResults"));
             processVTData(savedVTResults);
         }
-
    
-     
 };
 
 /*  Function: webSiteGetID 
@@ -91,36 +83,40 @@ let loadSavedData = function() {
 */
 
 const webSiteGetID  = (userSearch) => {
+   
 
     // website we want to scan.  We will have input box later
-    let myRequestURL = "https://www.virustotal.com/api/v3/urls";
+
+    // below is old code before "fixing" the cors
+    //let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    // need to submit as a FormData object
-    let formData = new FormData();
-    //formData.append('url', 'malware.wicar.org');
-   formData.append('url', userSearch);
-    // set up the headers
-    let myHeaders = new Headers();
-    myHeaders = {"X-Apikey" : vTotalInfo };
-   
-    myRequestObject = {
+   // let formData = new FormData();
+  // formData.append('url', userSearch);
+  
+// build the options object for the fetch command.
+    const options = {
         method: 'POST',
-        headers: myHeaders,
-        body: formData,
-        mode: 'cors' 
-          
-    }
-    console.log("myRequestObject" + myRequestObject);
-   // Try and fetch the id of the website
-   fetch(myRequestURL, myRequestObject).then(function(response){ 
- 
-    console.log(response);
+        headers: {
+            "X-Apikey" : vTotalInfo,
+            Accept: 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+   
+        body: new URLSearchParams({url : userSearch})//,
+  
+    };
+
+    // fetch using the URL and the options object
+    fetch('https://www.virustotal.com/api/v3/urls', options).then(function(response){ 
+
         if(response.ok) {
           // it worked so save the id
             response.json().then(function(data) {
 
                 // Virus total sends us the ID of the URL 
                 savedVTID = data.data.id;
-                console.log("ID= " + savedVTID);
+                // for debugging print the ID we get back from the scan
+                //console.log("ID= " + savedVTID);
                   
                 localStorage.setItem("savedVTID", JSON.stringify(savedVTID));
                 // Now we send the special ID virus total sent us, back to them to analyze
@@ -170,18 +166,19 @@ const webSiteScan = (savedVTID) => {
                 savedVTResults = data;
 
                 // Need to wait for analysis;
-                console.log("Status= "+ savedVTResults.data.attributes.status)
+                //for debugging print the status of the search
+               // console.log("Status= "+ savedVTResults.data.attributes.status)
                 let isDone =  savedVTResults.data.attributes.status;
                 if(isDone === "queued") {
                    
-                    //recall website scan 
-                    console.log("need to wait")
-                    setTimeout(() => {webSiteScan(savedVTID)}, 5000);
-                    $("#card_holder").attr("background-color", "yellow");
+                    //for debugging let log that we are waiting for a response
+                   // console.log("need to wait")
+                    setTimeout(() => {webSiteScan(savedVTID)}, 7000);
+                
                     $("#card_holder").text("Waiting on analysis...")
-                        .css("color", "orange")
+                        .css("color", "#1D435C")
                         .css("font-size", "40px")
-                        .css("background-color", "yellow");
+                        .css("background-color", "#EFBF1F");
                     return;
                 }
                
@@ -198,42 +195,6 @@ const webSiteScan = (savedVTID) => {
         }  
     });  
 }// end webSiteScan
-
-
-
-// Code to scan ny times technology articles
-const storyScan = () => {
-
-    tmpAPI = "A7QoqgMwCbe99GKVGJdTY3zisUsBXdAl";
-  
-    const url9 = "https://api.nytimes.com/svc/news/v3/content/all/technology.json?api-key="+tmpAPI;
-
-   const options = {
-     method: "GET",
-     headers: {
-       "Accept": "application/json"
-     },
-   };
-   fetch(url9, options).then(
-     response => {
-       if (response.ok) {
-         return response.json();
-       }
-       return response.text().then(err => {
-         return Promise.reject({
-           status: response.status,
-           statusText: response.statusText,
-           errorMessage: err,
-         });
-       });
-     })
-     .then(data => {
-       console.log(data);
-     })
-     .catch(err => {
-       console.error(err);
-     });
- }
 
 
 
@@ -255,10 +216,10 @@ processVTData = (savedVTResults) => {
     // use forEach to loop through it later.
     let tmpObj = savedVTResults.data.attributes.results
     // iterator for the Object loop
-    let i = 0;
+   
     let finalResultsObjArr = [];
     let dirtyResults = [];
-    let totalClean = 0;
+    let totalClean = 0; // keep track of the results
     let totalDirty = 0;
 
     // Using forEach to go through the object array so we can store the results in an easier format
@@ -272,129 +233,104 @@ processVTData = (savedVTResults) => {
             totalClean++
         } else {
             totalDirty++
+            //build a dirtyResults object to store so we can build UI easier
             dirtyResults.push({engine:val.engine_name, verdict:val.result});
-
         }
-    
-        i++;
     });
  
-    // might not work
+    // empty the scan summary div so we can rebuilt it
     $("#scan_summary").empty();
 
     //SCAN SUMMARY LEFT COLUMN
-    let tmpObj2 =  savedVTResults.data.attributes.stats;
-    let objName1 = "";
-    let objName2 = "";
 
-    objName1 = $("<ul>")
+
+    let resultsStats =  savedVTResults.data.attributes.stats;
+  
+    // Build the UL for summary
+    summaryUlEl = $("<ul>")
      .addClass("column  ml-2 mt-4")
      .text("Last Scan Summary");
 
-    $("#scan_summary").append(objName1);
+    $("#scan_summary").append(summaryUlEl);
+    // if user has not searched anything, use lastwebScan
         if(userSearch === "") {
+    
             userSearch = lastWebScan;
         }
 
-        objName2 = $("<li>").text("Site: " + userSearch);
-        objName1.append(objName2);
-        objName2 = $("<li>").text("Harmless: " + tmpObj2.harmless);
-        objName1.append(objName2);
-        objName2 = $("<li>").text("Malicous: " + tmpObj2.malicious);
-        objName1.append(objName2);
-        objName2 = $("<li>").text("Suspicious: " + tmpObj2.suspicious);
-        objName1.append(objName2);
-        objName2 = $("<li>").text("Undetected: " + tmpObj2.undetected);
-        objName1.append(objName2);
+        summaryIlEl = $("<li>").text("Site: " + userSearch)
+            .addClass("siteLI");
+        summaryUlEl.append(summaryIlEl);
+        summaryIlEl = $("<li>").text("Harmless: " + resultsStats.harmless);
+        summaryUlEl.append(summaryIlEl);
+        summaryIlEl = $("<li>").text("Malicous: " + resultsStats.malicious);
+        summaryUlEl.append(summaryIlEl);
+        summaryIlEl = $("<li>").text("Suspicious: " + resultsStats.suspicious);
+        summaryUlEl.append(summaryIlEl);
+        summaryIlEl = $("<li>").text("Undetected: " + resultsStats.undetected);
+        summaryUlEl.append(summaryIlEl);
 
-        i=0;
-        console.log(dirtyResults);
-
-        // clean the ui
+        // clean the card_holder div
         $("#card_holder").empty();
-        $("#card_holder").css("background-color", "#89CFF0")
+        $("#card_holder").css("background-color", "var(--pal2)")
             .css("font-size", "1em");
         Object.values(dirtyResults).forEach(val=> {
-            console.log("in forEach " + i);
-            objName1 = "";
-            objName2 = "";
-            objName3 = "";
-            objName4 = "";
-
-      //build a card for each one
-      //  objName1 = $("<div>")
-      //     .addClass("card p-0 m-3");
-      
-      objName1 = $("<div>")
+       
+      cardDivEl = $("<div>")
       .addClass("card p-0 m-3")
-     // .css("background-color", "yellow")
-      .css("background-color","#fafa53");
+      .css("background-color","#EFBF1F");
    
       if(val.verdict === "malicious") {
-        objName1 = $("<div>")
+        cardDivEl = $("<div>")
         .addClass("card p-0 m-3")
-       // .css("background-color", "red")
-        .css("background-color", "#dd2a2a")
-
-
+        .css("background-color", "var(--pal4)")
+        
       }
 
-        $("#card_holder").append(objName1);
+        $("#card_holder").append(cardDivEl);
 
-        objName2 = $("<div>")
+        cardContentEl = $("<div>")
         .addClass("card-content is-1 p-2 m-0 is-half-mobile");
         // .text(val.engine + ": \n  "+ val.verdict)
-        $(objName1).append(objName2);
+        $(cardDivEl).append(cardContentEl);
 
         //build a card for each one
-        objName3 = $("<div>")
+        cardTitleEl = $("<div>")
             .addClass("content-title has-text-weight-bold is-4 p-0 m-0")
         // .text(val.engine + ": \n  "+ val.verdict)
             .text(val.engine + ": ");
-        $(objName2).append(objName3);
+        $(cardContentEl).append(cardTitleEl);
 
-        
-        //  .attr("card-color", "red");
-        objName4 = $("<div>")
+        cardSubTitleEl = $("<div>")
             .addClass("subtitle has-text-weight-bold is-6 m-0 p-0")
             .text(val.verdict);
-        $(objName2).append(objName4);
+        $(cardContentEl).append(cardSubTitleEl);
 
-        i++;
     });
 
-    // No bad results lets display an okay message
+    // No bad results lets display a message saying
+    // that the website is safe to use if no bad results found
     if(totalDirty === 0) {
         $("#card_holder").text("Website is safe to use.")
-            .css("color", "green")
-            .css("font-size", "40px");
-           // .css("background-color", "yellow");
-
+            .css("color", "#5FED6E")
+            .css("font-size", "50px")
+            .css("text-shadow", "1px 1px 2px black")
+            .css("font-weight", "bolder");
     }
-    
-
-
-    console.log(savedVTResults.data.attributes.stats.harmless);
-
-    // Lets display the data
-
-    console.log("totalClean= " + totalClean);
-    console.log("totalDirty= " + totalDirty);
 
     // lets save the new object array.
     // saved as   Engine Name :  Result   
     localStorage.setItem("finalResultsObjArr", JSON.stringify(finalResultsObjArr));
-}
+}; //end processVTData
 
 
-// Label the input button with id="inputButton" so
-// it can be tied to this.
 
+// user hits the search button
 
 $("body").on("click", "#srchBtn", function() {
-    console.log(this);
+    // set userSearch equal to the user input
     userSearch = $("input").val();
-    console.log("userText= " + userSearch);
+  
     // clear search
     $("input").val("");
     webSiteGetID(userSearch);
@@ -404,11 +340,19 @@ $("body").on("click", "#srchBtn", function() {
 
 $("input").keypress(function(e) {
     if (event.which === 13) {
-        console.log("enter hit");
+       
         $("#srchBtn").trigger("click");
         return false;
     }
 });
+
+
+
+/*  Function: getNews()
+    => gets the 5 latest new york times tech articles 
+    args: none
+    return: none
+*/
   
   let articleList = []
 
@@ -427,12 +371,18 @@ async function getNews() {
         if(response) {
             response.json().then(function(data){
                 displayArticles(data);
-                console.log(data);
+               
             })
         }
     })
     
 };
+
+/*  Function: displayArticles()
+    => displays the NY Times articles
+    args: data from getNews
+    return: none
+*/
 
 function displayArticles(data) {
     // get the first 5 articles
@@ -453,7 +403,7 @@ function displayArticles(data) {
         mediaLeft.classList.add("media-left");
 
         let mediaFigure = document.createElement("figure");
-        mediaFigure.classList.add("image", "is-64x64");
+        mediaFigure.classList.add("image", "is-96x96");
 
         let img = document.createElement("img");
         img.src = articleList[i].thumbnail_standard;
@@ -491,4 +441,6 @@ function displayArticles(data) {
 initialLoad();// Call this to start the website.
 
 // load news after page load
-getNews();
+
+
+getNews(); //get NY Times news
