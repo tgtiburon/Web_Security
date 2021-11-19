@@ -53,7 +53,6 @@ let loadSavedData = function() {
     }else {
         // load and parse savedVTResults
        let finalResultsObjArr = JSON.parse(localStorage.getItem("finalResultsObjArr"));
-      // displayVTData(finalResultsObjArr);
        
     }
  
@@ -87,10 +86,11 @@ const webSiteGetID  = (userSearch) => {
    
 
     // website we want to scan.  We will have input box later
+
+    // below is old code before "fixing" the cors
     //let myRequestURL = "https://www.virustotal.com/api/v3/urls";
    // need to submit as a FormData object
    // let formData = new FormData();
-  
   // formData.append('url', userSearch);
   
 // build the options object for the fetch command.
@@ -443,4 +443,4 @@ initialLoad();// Call this to start the website.
 // load news after page load
 
 
-//getNews(); //get NY Times news
+getNews(); //get NY Times news
