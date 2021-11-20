@@ -405,8 +405,19 @@ function displayArticles(data) {
         let mediaFigure = document.createElement("figure");
         mediaFigure.classList.add("image", "is-96x96");
 
+        // Sometimes there is no image  
         let img = document.createElement("img");
-        img.src = articleList[i].thumbnail_standard;
+      
+        if(articleList[i].thumbnail_standard === undefined) {
+            
+            img.src = "./assets/images/poweredby_nytimes_30a.png";
+
+        } else {
+          
+            img.src = articleList[i].thumbnail_standard;
+        };
+        
+       
 
         let mediaContent = document.createElement("div");
         mediaContent.classList.add("media-content");
@@ -430,6 +441,10 @@ function displayArticles(data) {
         content.appendChild(articleLink);
 
     }
+    let nyTimesImg = document.createElement("img");
+    nyTimesImg.src = "./assets/images/poweredby_nytimes_150a.png"
+    nyTimesImg.classList.add("logoImg");
+    document.querySelector("#Tech_Stories").appendChild(nyTimesImg)
 
 };
 
