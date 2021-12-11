@@ -98,10 +98,10 @@ const webSiteGetID  = (userSearch) => {
         method: 'POST',
         headers: {
             "X-Apikey" : vTotalInfo,
-            //Accept: 'application/json',
+            Accept: 'application/json',
            //' Access-Control-Allow-Headers': 'Content-Type, Authorization',
            //'Authorization': 'Client-ID [my-client-id]',
-            Accept: 'text/plain',
+           // Accept: 'text/plain',
             'Content-Type': 'application/x-www-form-urlencoded'
         },
    
