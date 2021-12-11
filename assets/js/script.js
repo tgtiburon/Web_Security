@@ -99,6 +99,7 @@ const webSiteGetID  = (userSearch) => {
         headers: {
             "X-Apikey" : vTotalInfo,
             //Accept: 'application/json',
+           ' Access-Control-Allow-Headers': 'Content-Type, Authorization',
             Accept: 'text/plain',
             'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -108,7 +109,10 @@ const webSiteGetID  = (userSearch) => {
     };
 
     // fetch using the URL and the options object
+    // test
     fetch('https://www.virustotal.com/api/v3/urls', options).then(function(response){ 
+       // fetch('https://cors-anywhere.herokuapp.com/https://www.virustotal.com/api/v3/urls', options).then(function(response){ 
+
 
         if(response.ok) {
           // it worked so save the id
