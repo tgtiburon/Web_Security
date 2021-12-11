@@ -100,7 +100,7 @@ const webSiteGetID  = (userSearch) => {
             "X-Apikey" : vTotalInfo,
             //Accept: 'application/json',
            //' Access-Control-Allow-Headers': 'Content-Type, Authorization',
-           'Authorization': 'Client-ID [my-client-id]',
+           //'Authorization': 'Client-ID [my-client-id]',
             Accept: 'text/plain',
             'Content-Type': 'application/x-www-form-urlencoded'
         },
