@@ -87,11 +87,8 @@ const webSiteGetID  = (userSearch) => {
 
     // website we want to scan.  We will have input box later
 
-    // below is old code before "fixing" the cors
-    //let myRequestURL = "https://www.virustotal.com/api/v3/urls";
-   // need to submit as a FormData object
-   // let formData = new FormData();
-  // formData.append('url', userSearch);
+
+  // NEEDS TO RUN THROUGH LIVE SERVER.. VIRUSTOTAL has it configured that way.
   
 // build the options object for the fetch command.
     const options = {
