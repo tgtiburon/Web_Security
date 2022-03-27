@@ -11,6 +11,8 @@ let lastWebScan = "";
 
 
 
+
+
 // Functions
 
 /*  Function: initialLoad() 
